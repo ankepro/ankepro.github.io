@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: rgba(55, 20, 20, 0.2);
+}
+.nav-container {
+    height: 50px;
+    background-color: red;
+    display: flex;
+    font-weight: bolder;
+    color: aliceblue;
+    justify-content: space-between;
+    
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0px;
+    margin: auto 25px;
+
+
+}
+.nav-item {
+    display: inline-block;
+    margin: auto 10px;
+
+}
+
+.form-container {
+    background-color: aquamarine;
+    position: relative;
+    width: 70%;
+    margin: 10px auto;
+    padding: 20px;
+}
+.form-row {
+    display: flex;
+    margin: 10px auto;
+
+}
+.form-label {
+    min-width: 100px;
+
+}
+.form-input {
+    flex: 1;
+}
+.column-container {
+    display: flex;
+    justify-content: space-evenly;
+    max-height: 200px;
+    overflow-y: scroll;
+
+}
+.column-item:nth-child(1) {
+    flex: 1;
+}
+.column-item:nth-child(2)  {
+    flex: 2;
+}
+.column-item:nth-child(3)  {
+    flex: 1;
+}
+.column-item {
+    padding: 0px 20px;
+}
+.feature-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    flex-direction: column;
+}
+@media (min-width: 800px) {
+    .feature-container {
+        flex-direction: row;
+    }
+}
+.feature-item {
+    flex-basis:  30%;
+    padding: 20px;
+    margin: 5px 0px;
+
+}
+.feature-item:nth-child(1) {
+    background-color: aqua;
+
+}
+.feature-item:nth-child(2) {
+    background-color: greenyellow;
+    
+}
+.feature-item:nth-child(3) {
+    background-color: honeydew;
+    
+}
+.wrap-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+}
+.wrap-item {
+    background-color: red;
+    font-size: 50px;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    margin: 5px;
+}
+.center-layout {
+    display: flex;
+    background-color: bisque;
+    width: 80%;
+    height: 100px;
+    margin: 5px auto;
+}
+    
+.center-item {
+    margin: auto;
+    font-size: 50px;
+    font-weight: 600;
+}
+a {
+    text-decoration: none;
+}
+.chart-container {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+    height: 300px;
+
+
+}
+.chart-item {
+    width: 60px;
+    background-color: red;
+    text-align: center;
+    height: var(--percent);
+    align-self: flex-end;
+    color: aliceblue;
+}
+.end-container {
+    display: flex;
+    width: 70%;
+    margin: auto;
+
+}
+.end-column {
+    background-color: rgb(70, 57, 124);
+
+}
+.end-row {
+    background-color: aquamarine;
+    padding: 20px;
+
+}

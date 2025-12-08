@@ -1,6 +1,6 @@
 /* Thiết lập cơ bản và Font chữ hiện đại */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif; /* Dùng font chữ hiện đại hơn */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Dùng font schữ hiện đại hơn */
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -106,3 +106,4 @@ footer {
     font-size: 0.9em;
     margin-top: 30px;
 }
+

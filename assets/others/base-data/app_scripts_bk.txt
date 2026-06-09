@@ -1,0 +1,93 @@
+const SPREADSHEET_ID = '149ph6HPl5Ix7XZQAOuvEnTxPoPyJ_I8j-1Jbzr_LNNs';
+
+function doGet(e) {
+  var action = e.parameter.action;
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  
+  // Chọn Sheet (Mặc định lấy sheet đầu tiên nếu tên sai)
+  var sheetName = e.parameter.sheet; 
+  var sheet = (sheetName) ? ss.getSheetByName(sheetName) : ss.getSheets()[0];
+  if (!sheet) sheet = ss.getSheets()[0];
+
+  try {
+    // 1. ĐỌC DỮ LIỆU
+    if (action == 'read') {
+      var rows = sheet.getDataRange().getValues();
+      var filtered = rows.filter(function(r) { return r[0] !== "" && r[0] !== undefined; });
+      return ContentService.createTextOutput("Dữ liệu hiện có: " + JSON.stringify(filtered));
+    }
+
+    // 2. THÊM HOẶC CẬP NHẬT
+    if (action == 'add' || action == 'update') {
+      var cn = e.parameter.chinese.trim();
+      var vi = e.parameter.vietnamese || "";
+      
+      if (action == 'add') {
+        var dataA = sheet.getRange("A:A").getValues();
+        for (var i = 0; i < dataA.length; i++) {
+          if (dataA[i][0].toString().trim() === cn) {
+            return ContentService.createTextOutput("Lỗi: Từ này đã tồn tại!");
+          }
+        }
+      }
+
+      var py = getPinyinFinal(cn);
+      if (!vi) vi = LanguageApp.translate(cn, 'zh-CN', 'vi');
+
+      if (action == 'add') {
+        var row = getFirstEmptyRowA(sheet);
+        sheet.getRange(row, 1, 1, 3).setValues([[cn, py, vi]]);
+        return ContentService.createTextOutput("Thành công: Đã thêm từ mới.");
+      } else {
+        var rowIdx = parseInt(e.parameter.rowIdx) + 1;
+        sheet.getRange(rowIdx, 1, 1, 3).setValues([[cn, py, vi]]);
+        return ContentService.createTextOutput("Thành công: Đã cập nhật hàng " + rowIdx);
+      }
+    }
+
+    // 3. XOÁ
+    if (action == 'delete') {
+      var rowIdx = parseInt(e.parameter.rowIdx); 
+      var realRow = rowIdx + 1; 
+      if (realRow > 0) {
+        sheet.deleteRow(realRow);
+        return ContentService.createTextOutput("Thành công: Đã xoá hàng " + realRow);
+      }
+    }
+
+    return ContentService.createTextOutput("Lỗi: Hành động không hợp lệ.");
+
+  } catch (err) {
+    return ContentService.createTextOutput("Lỗi hệ thống: " + err.toString());
+  }
+}
+
+// Hàm lấy Pinyin (Giữ nguyên logic cũ)
+function getPinyinFinal(text) {
+  if (!text) return "";
+  var url = "https://translate.googleapis.com/translate_a/single?client=it&dt=rm&sl=zh-CN&tl=vi&q=" + encodeURIComponent(text);
+  try {
+    var res = UrlFetchApp.fetch(url, {
+      "muteHttpExceptions": true,
+      "headers": { "User-Agent": "AndroidTranslate/5.10.0.RC02.131074668 (Linux; U; Android 6.0;)" }
+    });
+    if (res.getResponseCode() === 200) {
+      var data = JSON.parse(res.getContentText());
+      if (data && data[0]) {
+        var pinyin = "";
+        for (var i = 0; i < data[0].length; i++) {
+          if (data[0][i][3]) pinyin += data[0][i][3] + " ";
+        }
+        return pinyin.trim();
+      }
+    }
+  } catch (e) { return "Lỗi lấy Pinyin"; }
+  return "";
+}
+
+// Hàm tìm dòng trống (Giữ nguyên)
+function getFirstEmptyRowA(sheet) {
+  var v = sheet.getRange("A:A").getValues();
+  for (var i = 0; i < v.length; i++) { if (v[i][0] === "") return i + 1; }
+  return v.length + 1;
+}

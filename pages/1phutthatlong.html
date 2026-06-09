@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <div id="head-placeholder"></div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 Phút thật lòng :v</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/trollclick.css" />
+
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container-wrapper">
+        <div class="trollclick" id="troll-box">
+            <h2>Thấy tao đẹp trai không?</h2>
+
+            <div class="btn-container" id="container-inside">
+                <button class="btn btn-yes" id="btn-yes" onclick="handleYesClick()">Có</button>
+                <div class="btn-spacer" id="btn-spacer"></div>
+                <button class="btn btn-no" id="btn-no">Không</button>
+            </div>
+        </div>
+    </div>
+    <div class="custom-alert" id="custom-alert">Chính xác! 😎</div>
+
+
+    <div id="footer-placeholder"></div>
+
+
+
+    <script>
+
+        const baseTag = document.querySelector('base[href]');
+        const appBasePath = baseTag
+            ? new URL(baseTag.getAttribute('href'), window.location.href).pathname
+            : (window.location.pathname.includes('/pages/')
+                ? window.location.pathname.substring(0, window.location.pathname.indexOf('/pages/') + 1)
+                : '/');
+        const normalizedBasePath = appBasePath.endsWith('/') ? appBasePath : `${appBasePath}/`;
+
+        const s1 = document.createElement('script');
+        s1.src = normalizedBasePath + 'assets/js/main-scripts.js?v=' + Date.now();
+        document.write(s1.outerHTML);
+
+        const s2 = document.createElement('script');
+        s2.src = normalizedBasePath + 'assets/js/trollclick.js?v=' + Date.now();
+        document.write(s2.outerHTML);
+
+    </script>
+</body>
+
+</html>

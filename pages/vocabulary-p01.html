@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <div id="head-placeholder"></div>
+  <title>Từ vựng 进</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/vocabulary.css" />
+</head>
+
+<body>
+
+
+  <div id="header-placeholder"></div>
+  <h2 class="h0" style="text-align: center; margin-bottom: 0px; text-transform: uppercase;">
+    Từ vựng 进
+  </h2>
+  <main class="container" style="margin-top: 0px; margin-bottom: 0px">
+    <div class="box-admin">
+      <div id="status-msg"></div>
+
+      <div class="form-cyber">
+        <input type="text" id="cn" class="input-full" placeholder="Hán tự (VD: 学习)" />
+        <input type="text" id="vi" class="input-full" placeholder="Nghĩa Việt (bỏ trống nếu muốn dịch tự động)" />
+        <div class="form-row-last">
+          <button class="btn-save-cyber" onclick="handleSave()" id="btnSubmit">
+            LƯU LẠI
+          </button>
+          <button class="btn-cancel-cyber" onclick="cancelEdit()" id="btnCancel" style="display: none;">
+            HỦY
+          </button>
+          <button class="btn-save-cyber" onclick="testReload()" id="btnRefresh">
+            LÀM MỚI
+          </button>
+        </div>
+      </div>
+
+      <input class="find-vocabulary" type="text" id="q" oninput="handleSearch()" onkeyup="handleSearch()"
+        placeholder="🔍 Tìm kiếm từ vựng..." />
+
+      <div class="table-area">
+        <table>
+          <thead>
+            <tr>
+              <th>Hán tự</th>
+              <th>Pinyin</th>
+              <th>Nghĩa</th>
+              <th>Lệnh</th>
+            </tr>
+          </thead>
+          <tbody id="res"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- Loader Spinner & Skeleton Screen -->
+  <div id="loader-spinner-root" class="loader-spinner">
+    <div style="text-align: center;">
+      <div class="spinner"></div>
+      <div class="loader-text">Đang tải dữ liệu...</div>
+    </div>
+  </div>
+
+  <button id="draw-toggle" class="fab-btn">✎</button>
+  <div id="draw-popup" class="draw-container is-hidden">
+    <div class="canvas-wrapper">
+      <button onclick="clearCanvas()" class="btn-draw btn-clear">Clear</button>
+      <button onclick="undo()" class="btn-draw btn-undo">Undo</button>
+      <canvas id="writeCanvas"></canvas>
+      <div id="recognition-box">
+        <!-- Chỉ 3 chữ giống nhất hiện ở đây -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var s = document.createElement('script');
+    s.src = "/assets/js/main-scripts.js?v=" + Date.now();
+    document.write(s.outerHTML);
+  </script>
+  <script>
+    var s = document.createElement('script');
+    s.src = "/assets/js/vocabulary-001.js?v=" + Date.now();
+    document.write(s.outerHTML);
+  </script>
+</body>
+
+</html>

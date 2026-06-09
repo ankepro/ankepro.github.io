@@ -1,0 +1,122 @@
+/* --- BĐ trollclick --- */
+.container-wrapper {
+    width: 90%;
+    max-width: 600px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.trollclick {
+    background: var(--panel);
+    padding: 0px 10px;
+    border-radius: 16px;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trollclick h2 {
+    font-size: 28px;
+    color: var(--secondary);
+    margin-top: 5px;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.trollclick .btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.trollclick .btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.trollclick .btn-yes {
+    background-color: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.trollclick .btn-yes:hover {
+    background-color: rgba(255, 204, 0, 0.1);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+    text-shadow: 0 0 5px var(--accent);
+}
+
+/* Ô trống giữ khoảng cách tĩnh */
+.btn-spacer {
+    width: 124px;
+    height: 47px;
+    display: inline-block;
+}
+
+/* Nút Không di chuyển tức thời không trễ hoạt ảnh */
+.trollclick .btn-no {
+    background-color: transparent;
+    color: var(--primary);
+    border-color: var(--primary);
+    position: absolute;
+    z-index: 999;
+    touch-action: none;
+    box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+    transition: none !important;
+}
+
+.trollclick .btn-no:hover {
+    background-color: rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
+    text-shadow: 0 0 5px var(--primary);
+}
+
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    background-color: rgba(13, 1, 30, 0.95);
+    color: var(--secondary);
+    padding: 15px 40px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    pointer-events: none;
+}
+
+.custom-alert.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* --- KT trollclick --- */

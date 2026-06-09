@@ -1,0 +1,3655 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <div id="head-placeholder"></div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Quản trị</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <style>
+        .admin-btn {
+            display: inline-block;
+            width: 40%;
+            max-width: 100%;
+            padding: 5px 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0d0421;
+            background-image: linear-gradient(135deg, rgba(0, 220, 255, .95), rgba(255, 0, 255, .95));
+            border: 1px solid rgba(0, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 28px rgba(0, 255, 255, 0.25), 0 0 16px rgba(255, 0, 255, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn.small-btn {
+            width: auto;
+            padding: 5px 8px;
+            font-size: 0.78rem;
+            border-radius: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .admin-btn:hover,
+        .admin-btn:focus {
+            background-image: linear-gradient(135deg, rgba(0, 255, 255, .95), rgba(255, 50, 255, .95));
+            box-shadow: 0 0 32px rgba(0, 255, 255, 0.35), 0 0 24px rgba(255, 0, 255, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .admin-btn:disabled {
+            opacity: .75;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            cursor: not-allowed;
+        }
+
+        .dropdown-admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: nowrap;
+            overflow-x: hidden;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .dropdown-admin-actions button {
+            flex: 0 1 auto;
+            min-width: 80px;
+            white-space: normal;
+            line-height: 1.2;
+        }
+
+        .dropdown-admin-actions span {
+            flex: 1 1 0;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .dropdown-admin-card .menu-item {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 16px;
+            margin-bottom: 12px;
+            background: rgba(14, 8, 38, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 0 18px rgba(0, 255, 255, 0.08);
+        }
+
+        .dropdown-admin-card .menu-item-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-admin-card .menu-item-row input {
+            background: #0f0d22;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            min-width: 0;
+            flex: 1 1 100px;
+        }
+
+        .dropdown-admin-card .menu-item-row .item-label {
+            flex: 1 1 120px;
+        }
+
+        .dropdown-admin-card .menu-item-row .item-href {
+            flex: 1 1 140px;
+        }
+
+        .dropdown-admin-card .menu-item-row .admin-btn {
+            flex: 0 0 auto;
+            min-width: 32px;
+            white-space: nowrap;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .section-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid rgba(0, 255, 255, 0.18);
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.04);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.25s ease, background 0.2s;
+        }
+
+        .section-toggle:hover,
+        .section-toggle:focus-visible {
+            background: rgba(0, 255, 255, 0.12);
+            outline: none;
+        }
+
+        .section-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .section-body.collapsed {
+            display: none;
+        }
+
+        .dropdown-admin-card .menu-item-row.depth-1 {
+            color: #ffffff;
+        }
+
+        .dropdown-admin-card .menu-item-row.depth-2 {
+            color: #b8daff;
+            background: rgba(59, 130, 246, 0.08);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .dropdown-admin-card .menu-item-row.depth-3 {
+            color: #ffb3b3;
+            background: rgba(244, 63, 94, 0.08);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .dropdown-admin-card .menu-item-row.depth-2 input,
+        .dropdown-admin-card .menu-item-row.depth-3 input {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .dropdown-admin-card .submenu-container {
+            padding-left: 18px;
+            border-left: 1px dashed rgba(255, 255, 255, 0.12);
+            margin-top: 8px;
+        }
+
+        .dropdown-admin-card .submenu-container .menu-item-row {
+            background: transparent;
+            padding: 6px 0;
+        }
+
+        @media (max-width: 768px) {
+            .dropdown-admin-card .menu-item-row {
+                flex-wrap: wrap;
+            }
+
+            .dropdown-admin-card .menu-item-row input {
+                flex: 1 1 80px;
+                padding: 6px;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-admin-card .menu-item-row .item-label {
+                flex: 1 1 80px;
+            }
+
+            .dropdown-admin-card .menu-item-row .item-href {
+                flex: 1 1 100px;
+            }
+
+            .dropdown-admin-card .menu-item-row .admin-btn {
+                min-width: 28px;
+                padding: 4px 6px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .admin-delete-btn {
+            background-image: linear-gradient(135deg, rgba(0, 220, 255, .95), rgba(255, 0, 255, .95));
+            color: #0d0421;
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 28px rgba(0, 255, 255, 0.25), 0 0 16px rgba(255, 0, 255, 0.25);
+        }
+
+        .admin-delete-btn:hover,
+        .admin-delete-btn:focus {
+            background-image: linear-gradient(135deg, rgba(0, 255, 255, .95), rgba(255, 50, 255, .95));
+            box-shadow: 0 0 32px rgba(0, 255, 255, 0.35), 0 0 24px rgba(255, 0, 255, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .page-config-row.dragging {
+            opacity: 0.5;
+            border: 1px dashed rgba(255, 255, 255, 0.6);
+        }
+
+        @media (min-width: 768px) {
+            .page-config-row {
+                flex-wrap: nowrap !important;
+            }
+
+            .page-config-row .page-name {
+                flex: 0 0 75% !important;
+                min-width: 0 !important;
+            }
+
+            .page-config-row .small-btn {
+                flex: 1 1 auto !important;
+            }
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 6px;
+            text-align: left;
+            color: #fff;
+        }
+
+        #commentTable tbody tr {
+            height: 50px !important;
+            max-height: 50px !important;
+            overflow: hidden !important;
+        }
+
+        #commentTable th,
+        #commentTable td {
+            word-break: break-word;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            padding: 3px 5px !important;
+            vertical-align: middle;
+            height: 50px !important;
+            max-height: 50px !important;
+            line-height: 1.2;
+            display: table-cell !important;
+        }
+
+        #commentTable th.date-column,
+        #commentTable td.date-cell {
+            width: 9%;
+            text-align: center;
+            white-space: normal;
+        }
+
+        #commentTable th.name-column {
+            width: 11%;
+        }
+
+        #commentTable th.post-column {
+            width: 14%;
+        }
+
+        #commentTable th.content-column {
+            width: 48%;
+        }
+
+        #commentTable th.status-column {
+            width: 10%;
+            text-align: center;
+        }
+
+        #commentTable th.action-column,
+        #commentTable td.action-cell {
+            width: 8%;
+            text-align: center;
+            padding: 3px 5px;
+        }
+
+        #commentTable td.action-cell .comment-action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #commentTable td.action-cell .comment-action-buttons button {
+            padding: 4px 6px;
+            min-width: auto;
+            font-size: 0.78rem;
+        }
+
+        #commentFilterStatus {
+            background: rgba(13, 8, 38, 0.95);
+            color: #fff;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        #commentFilterStatus option {
+            color: #000;
+            background: #fff;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1630;
+            border-radius: 12px;
+            padding: 20px;
+            width: min(980px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 28px rgba(0, 255, 255, 0.35);
+        }
+
+        .modal-content label {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #121026;
+            color: #fff;
+        }
+
+        .tag-select-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag-select-label {
+            margin-bottom: 6px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #121026;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .modal-content textarea.code-editor {
+            font-family: 'Fira Code', 'Source Code Pro', Consolas, 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: #121026;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px;
+            width: 100%;
+            min-height: 400px;
+            resize: vertical;
+            display: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+                max-height: 95vh;
+            }
+
+            .modal-content label {
+                margin-bottom: 15px;
+            }
+
+            .modal-content input,
+            .modal-content textarea,
+            .modal-content select {
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .modal-content textarea.code-editor {
+                font-size: 1rem;
+                font-family: inherit;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .modal-actions button {
+                width: 100%;
+                padding: 12px;
+            }
+
+            .admin-panel {
+                padding: 15px !important;
+            }
+
+            .card {
+                padding: 15px !important;
+            }
+
+            .admin-table {
+                font-size: 0.8rem;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 6px;
+            }
+
+            .page-config-row {
+                flex-wrap: nowrap !important;
+                justify-content: flex-start;
+                gap: 4px;
+                align-items: center;
+            }
+
+            .page-config-row .order-display {
+                width: 18px;
+                flex-shrink: 0;
+                font-size: 0.75rem;
+            }
+
+            .page-config-row .drag-handle {
+                width: 12px;
+                flex-shrink: 0;
+                font-size: 0.7rem;
+                padding: 0 2px;
+            }
+
+            .page-config-row .page-name {
+                flex: 1;
+                min-width: 80px;
+                font-size: 0.85rem;
+                padding: 5px 6px;
+            }
+
+            .page-config-row .small-btn {
+                width: 22px;
+                height: 22px;
+                padding: 0;
+                font-size: 0.55rem;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        #postContent {
+            font-weight: normal !important;
+        }
+
+        #postContent,
+        #postContent * {
+            font-weight: normal !important;
+        }
+
+        #postContent b,
+        #postContent strong {
+            font-weight: bold !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container" style="min-height: calc(100vh - 165px); padding-top: 10px;">
+        <div id="admin-auth-area"
+            style="margin: 0 auto; max-width: 350px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+            <div class="h0" style="text-align: center; margin-bottom: 16px;">Đăng nhập Admin</div>
+            <input id="adminPasswordInput" type="password" inputmode="numeric" pattern="\d*"
+                style="width:100%; padding:10px; font-size:1.2rem; text-align:center; margin-bottom:10px;"
+                placeholder="Nhập mật khẩu" />
+            <div id="adminKeypad"
+                style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:8px;">
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('1')"
+                    style="padding:12px 0;">1</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('2')"
+                    style="padding:12px 0;">2</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('3')"
+                    style="padding:12px 0;">3</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('4')"
+                    style="padding:12px 0;">4</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('5')"
+                    style="padding:12px 0;">5</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('6')"
+                    style="padding:12px 0;">6</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('7')"
+                    style="padding:12px 0;">7</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('8')"
+                    style="padding:12px 0;">8</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('9')"
+                    style="padding:12px 0;">9</button>
+                <button type="button" class="admin-btn small-btn" onclick="clearAdminKey()"
+                    style="padding:12px 0;">C</button>
+                <button type="button" class="admin-btn small-btn" onclick="pressAdminKey('0')"
+                    style="padding:12px 0;">0</button>
+                <button type="button" class="admin-btn small-btn" onclick="submitAdminKey()"
+                    style="padding:12px 0;">OK</button>
+            </div>
+            <div id="adminAuthMsg" style="text-align:center; color:#ff8; min-height:22px; font-weight:bold;"></div>
+        </div>
+
+        <div id="main-content-area" class="admin-panel" style="margin: 0 auto; max-width: 800px; display:none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+            </div>
+            <div class="h0" style="text-align: center; margin-bottom: 30px;">TRANG ADMIN</div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button onclick="logoutAdmin()" class="admin-btn">Đăng xuất</button>
+            </div>
+            <div class="card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Cấu hình phân trang</h2>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <label style="flex:1; min-width:220px; color:#fff;">
+                        Số chuyên mục / trang chủ:
+                        <input id="categoriesPerPage" type="number" min="1" value="3" style="width:100%; padding:8px;">
+                    </label>
+                    <label style="flex:1; min-width:220px; color:#fff;">
+                        Số bài viết / trang chuyên mục:
+                        <input id="postsPerCategoryPage" type="number" min="1" value="5"
+                            style="width:100%; padding:8px;">
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;">
+                    <button id="saveConfigBtn" onclick="saveAdminConfig()" class="admin-btn"
+                        style="flex: 1; min-width: 160px;">LƯU CẤU HÌNH</button>
+                    <button id="changePassBtn" onclick="promptSetAdminPassword()" class="admin-btn"
+                        style="flex: 1; min-width: 160px;">ĐỔI MẬT KHẨU ADMIN</button>
+                </div>
+                <div id="configMsg" style="margin-top: 16px; font-size: 1rem; color: #fff;"></div>
+            </div>
+
+            <div class="card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Quản lý chuyên mục</h2>
+                <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px; color:#fff;">
+                    <input id="autoSortByName" type="checkbox" onchange="onAutoSortToggle()" />
+                    Tự động sắp xếp Menu A-Z
+                </label>
+                <div id="pageConfigArea" style="color:#fff"></div>
+                <div style="display:flex; gap:10px; align-items:center; justify-content:center; margin-top:10px;">
+                    <button class="admin-btn small-btn" onclick="addPageConfigRow()"
+                        style="flex:1; min-width:100px;">THÊM DÒNG</button>
+                    <button class="admin-btn small-btn" onclick="refreshPageConfig()"
+                        style="flex:1; min-width:100px;">LÀM MỚI</button>
+                    <button class="admin-btn small-btn" onclick="savePageConfig()"
+                        style="flex:1; min-width:100px;">LƯU</button>
+                </div>
+                <div id="pageConfigMsg" style="margin-top: 16px; font-size: 1rem; color: #fff;"></div>
+            </div>
+
+            <div class="card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Quản lý bài viết</h2>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                    <input id="postSearchInput" type="text" placeholder="Tìm theo tên bài viết"
+                        style="flex:2; min-width:260px; padding:8px;" oninput="renderPostsAdminTable()" />
+                    <select id="postCategoryFilter" style="flex:1; min-width:180px; padding:8px;"
+                        onchange="renderPostsAdminTable()">
+                        <option value="">Tất cả chuyên mục</option>
+                    </select>
+                    <button class="admin-btn small-btn" type="button" onclick="toggleSortByDate()"
+                        style="flex:1; min-width:180px;">Sắp xếp: <span id="sortDirectionText">Giảm</span></button>
+                    <button class="admin-btn small-btn" type="button" onclick="refreshPostsData()"
+                        style="flex:1; min-width:180px;">Làm mới</button>
+                    <button class="admin-btn small-btn" type="button" onclick="openPostModal()"
+                        style="flex:1; min-width:180px;">Thêm bài viết mới</button>
+                </div>
+
+                <div style="overflow-x:hidden;">
+                    <table class="admin-table" id="postsTable">
+                        <thead>
+                            <tr>
+                                <th style="width:4%; text-align:center;">ID</th>
+                                <th style="width:52%; text-align:center;">Tiêu đề</th>
+                                <th style="width:20%; text-align:center;">Chuyên mục</th>
+                                <th style="width:14%; text-align:center;">Ngày</th>
+                                <th style="width:10%; text-align:center; color: transparent;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTableBody"></tbody>
+                    </table>
+                    <div id="postsPagination" style="margin-top:12px;"></div>
+                </div>
+                <p id="postsAdminMsg" style="margin-top: 12px; color: #fff;"></p>
+                <div id="adminToast"
+                    style="display:none;position:fixed;left:50%;top:25%;transform:translate(-50%, 0);width:50vw;max-width:720px;min-width:320px;padding:18px 24px;background:rgba(0,0,0,0.95);border:1px solid rgba(0,255,255,0.85);border-radius:14px;color:#8affb5;font-size:1.1rem;text-align:center;box-shadow:0 0 28px rgba(0,255,255,0.28);pointer-events:none;">
+                </div>
+            </div>
+
+            <div id="postModal" class="modal-overlay" aria-hidden="true"
+                onclick="if (event.target === this) attemptClosePostModal()">
+                <div class="modal-content">
+                    <h3 id="modalTitle" style="margin-top:0; color:#8affb5;">Thêm / chỉnh sửa bài viết</h3>
+                    <form id="postForm"
+                        onsubmit="event.preventDefault(); saveCurrentPost().catch(err => console.error('Lỗi lưu bài viết:', err));">
+                        <input type="hidden" id="postRowIndex" />
+                        <label>ID
+                            <input id="postID" required />
+                        </label>
+                        <label>Chuyên mục
+                            <select id="postCategory" onchange="postCategoryChanged()" required>
+                                <option value="__new__">-- Thêm chuyên mục mới --</option>
+                            </select>
+                            <div id="postCategoryNewContainer" style="display:none; margin-top:5px;">
+                                <div style="font-size:0.9em; color:#aaa;">Nhập chuyên mục mới:</div>
+                                <input id="postCategoryNew" placeholder="Nhập chuyên mục mới"
+                                    style="margin-top:5px; width:100%; padding:8px;" />
+                            </div>
+                        </label>
+                        <label>Tiêu đề
+                            <input id="postTitle" required />
+                        </label>
+                        <label>Link ảnh trích dẫn
+                            <input id="postImageUrl" />
+                        </label>
+                        <label>Alt hình ảnh
+                            <input id="postImageAlt" />
+                        </label>
+                        <label>Đoạn trích dẫn
+                            <textarea id="postExcerpt" rows="2"></textarea>
+                        </label>
+                        <label>Nội dung bài viết
+                            <div id="editorToolbar"
+                                style="margin-bottom: 8px; display: flex; gap: 4px; flex-wrap: wrap;">
+                                <button type="button" onclick="execCmd('bold')" class="admin-btn small-btn"
+                                    style="font-weight: bold;" title="Bold">B</button>
+                                <button type="button" onclick="execCmd('italic')" class="admin-btn small-btn"
+                                    style="font-style: italic;" title="Italic">I</button>
+                                <button type="button" onclick="execCmd('underline')" class="admin-btn small-btn"
+                                    style="text-decoration: underline;" title="Underline">U</button>
+                                <button type="button" onclick="execCmd('strikeThrough')" class="admin-btn small-btn"
+                                    style="text-decoration: line-through;" title="Strikethrough">S</button>
+                                <button type="button" onclick="execCmd('justifyLeft')" class="admin-btn small-btn"
+                                    title="Align Left">⬅</button>
+                                <button type="button" onclick="execCmd('justifyCenter')" class="admin-btn small-btn"
+                                    title="Align Center">⬌</button>
+                                <button type="button" onclick="execCmd('justifyRight')" class="admin-btn small-btn"
+                                    title="Align Right">➡</button>
+                                <button type="button" onclick="execCmd('insertUnorderedList')"
+                                    class="admin-btn small-btn" title="Bullet List">•</button>
+                                <button type="button" onclick="execCmd('insertOrderedList')" class="admin-btn small-btn"
+                                    title="Numbered List">1.</button>
+                                <button type="button" onclick="execCmd('indent')" class="admin-btn small-btn"
+                                    title="Increase Indent">→</button>
+                                <button type="button" onclick="execCmd('outdent')" class="admin-btn small-btn"
+                                    title="Decrease Indent">←</button>
+                                <button type="button" onclick="execCmd('createLink', prompt('Enter URL:'))"
+                                    class="admin-btn small-btn" title="Insert Link">🔗</button>
+                                <button type="button" onclick="execCmd('insertImage', prompt('Enter image URL:'))"
+                                    class="admin-btn small-btn" title="Insert Image">🖼</button>
+                                <button type="button" onclick="insertPageBreak()" class="admin-btn small-btn"
+                                    title="Insert Page Break">📄</button>
+                                <button type="button" id="toggleCodeBtn" onclick="toggleCodeView()"
+                                    class="admin-btn small-btn" title="Toggle Code View">Code</button>
+                            </div>
+                            <div id="postContent" contenteditable="true" class="content-editor"
+                                style="height: calc(90vh - 150px); padding: 8px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; background: #121026; color: #fff; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow-y: auto;">
+                            </div>
+                            <textarea id="postContentCode" class="code-editor" rows="4"
+                                style="display: none;"></textarea>
+                        </label>
+                        <label>Tag - Chọn nhiều tags để thêm
+                            <div id="postTagsList"
+                                style="border:1px solid #00ffff; padding:8px; margin-bottom:8px; min-height:40px; background:rgba(0,0,0,0.2); border-radius:4px;">
+                                <!-- Các tag được chọn sẽ hiển thị ở đây -->
+                            </div>
+                            <label class="tag-select-label" style="margin-bottom:6px;">-- Chọn tag --</label>
+                            <input id="postTagsSearch" placeholder="Tìm tag..."
+                                style="width:100%; margin-bottom:8px; padding:8px;" oninput="filterPostTagsSelect()" />
+                            <select id="postTagsSelect" multiple size="5"
+                                style="width:100%; padding:8px; margin-bottom:8px;">
+                                <option value="" disabled>-- Chọn tag --</option>
+                            </select>
+                            <div style="display:flex; gap:8px; margin-bottom:8px;">
+                                <input id="postTagInput" placeholder="Nhập tag mới..." style="flex:1;" />
+                                <button type="button" onclick="addNewTag()" class="admin-btn small-btn"
+                                    style="width:auto;">Thêm tag</button>
+                            </div>
+                            <input id="postTags" type="hidden" />
+                        </label>
+                        <label>Thời gian
+                            <input id="postTime" type="datetime-local" />
+                            <small style="color:#aaa; display:block; margin-top:4px;">Nếu để trống, sẽ sử dụng thời gian
+                                hiện tại khi lưu</small>
+                        </label>
+                        <div class="modal-actions">
+                            <button class="admin-btn small-btn" type="submit">Lưu</button>
+                            <button class="admin-btn small-btn" type="button"
+                                onclick="attemptClosePostModal()">Đóng</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="editCommentModal" class="modal-overlay" aria-hidden="true"
+                onclick="if (event.target === this) attemptCloseEditCommentModal()">
+                <div class="modal-content">
+                    <h3 id="editCommentModalTitle" style="margin-top:0; color:#8affb5;">Chỉnh sửa comment</h3>
+                    <form id="editCommentForm" onsubmit="event.preventDefault(); saveEditCommentModal();">
+                        <label>Bài viết comment
+                            <input id="editCommentPost" readonly />
+                        </label>
+                        <label>Họ tên
+                            <input id="editCommentName" />
+                        </label>
+                        <label>Thời gian
+                            <input id="editCommentTime" type="datetime-local" />
+                        </label>
+                        <label>Trạng thái
+                            <select id="editCommentStatus">
+                                <option value="pending_register">Chờ duyệt đăng</option>
+                                <option value="pending_delete">Chờ duyệt xóa</option>
+                                <option value="hidden">Ẩn</option>
+                                <option value="approved">Đã duyệt</option>
+                            </select>
+                        </label>
+                        <label>Reply comment của ai
+                            <select id="editCommentReplyToName">
+                                <option value="">-- Giữ nguyên / không reply --</option>
+                            </select>
+                        </label>
+                        <label>Nội dung comment
+                            <textarea id="editCommentContent" rows="5"></textarea>
+                        </label>
+                        <div class="modal-actions">
+                            <button class="admin-btn small-btn" type="submit">Lưu</button>
+                            <button class="admin-btn small-btn" type="button"
+                                onclick="attemptCloseEditCommentModal()">Đóng</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card dropdown-admin-card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px; overflow-x: hidden;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Quản lý Dropmenu</h2>
+                <div class="dropdown-admin-actions">
+                    <button class="admin-btn small-btn" onclick="loadDropdownMenus()">Load F5</button>
+                    <button class="admin-btn small-btn" onclick="addNewMenu()">New</button>
+                    <button class="admin-btn small-btn" onclick="saveDropdownMenus()">Save</button>
+                    <span id="dropdownMsg" style="color:#fff; min-width:200px;"></span>
+                </div>
+                <div id="dropdownMenusContainer" style="margin-top:20px;"></div>
+            </div>
+
+            <div class="card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Quản lý liên hệ</h2>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; align-items:center;">
+                    <button class="admin-btn small-btn" type="button" onclick="loadContactEntries()"
+                        style="flex:1; min-width:160px;">Tải liên hệ</button>
+                    <button class="admin-btn small-btn" type="button" onclick="clearContactEntries()"
+                        style="flex:1; min-width:160px;">Xóa hết</button>
+                    <span id="contactMsg" style="color:#fff; flex:1; min-width:200px;"></span>
+                </div>
+                <div style="overflow-x:auto; max-height:250px;">
+                    <table class="admin-table" id="contactTable">
+                        <thead>
+                            <tr>
+                                <th style="width:6%; text-align:center;">STT</th>
+                                <th style="width:15%; text-align:center;">Danh tính</th>
+                                <th style="width:59%; text-align:center;">Nội dung</th>
+                                <th style="width:12%; text-align:center;">Ngày</th>
+                                <th style="width:8%; text-align:center; color: transparent;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card"
+                style="background: rgba(14, 8, 38, 0.85); padding: 24px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); margin-bottom: 20px;">
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Quản lý comment</h2>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; align-items:center;">
+                    <button class="admin-btn small-btn" type="button" onclick="loadCommentEntries()"
+                        style="flex:0 0 135px; min-width:110px; padding:6px 8px;">Tải comment</button>
+                    <button class="admin-btn small-btn" type="button" onclick="refreshCommentEntries()"
+                        style="flex:0 0 135px; min-width:110px; padding:6px 8px;">Làm mới</button>
+                    <select id="commentFilterStatus"
+                        style="flex:0 0 170px; min-width:140px; padding:8px; border-radius:8px; border:1px solid rgba(0,255,255,0.2); background:rgba(13,8,38,0.95); color:#fff;"
+                        onchange="filterCommentTable()">
+                        <option value="">-- Tất cả trạng thái --</option>
+                        <option value="pending_register">Chờ duyệt đăng</option>
+                        <option value="pending_delete">Chờ duyệt xóa</option>
+                        <option value="approved">Đã duyệt</option>
+                        <option value="hidden">Ẩn</option>
+                    </select>
+                    <span id="commentMsg" style="color:#fff; flex:1 1 0; min-width:160px; text-align:right;"></span>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                    <input id="commentFilterPost" type="text" placeholder="Lọc bài viết"
+                        style="flex:1; min-width:120px; padding:8px; border-radius:8px; border:1px solid rgba(0,255,255,0.2); background:rgba(255,255,255,0.06); color:#fff;"
+                        oninput="filterCommentTable()" />
+                    <input id="commentFilterContent" type="text" placeholder="Lọc nội dung"
+                        style="flex:1; min-width:120px; padding:8px; border-radius:8px; border:1px solid rgba(0,255,255,0.2); background:rgba(255,255,255,0.06); color:#fff;"
+                        oninput="filterCommentTable()" />
+                </div>
+                <div style="overflow-x:auto; max-height:420px;">
+                    <table class="admin-table" id="commentTable" style="border-collapse: separate; border-spacing: 0;">
+                        <thead>
+                            <tr>
+                                <th class="post-column" style="text-align:center;">Bài viết</th>
+                                <th class="content-column" style="text-align:center;">Nội dung</th>
+                                <th class="status-column" style="text-align:center;">Trạng thái</th>
+                                <th class="action-column" style="text-align:center;">Sửa/xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commentTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <div id="footer-placeholder"></div>
+
+
+    <script>
+        const ADMIN_CONFIG_PATH = '../assets/others/base-data/admin.php';
+        const ADMIN_SAVE_PATH = '../assets/others/base-data/admin.php';
+        window.adminConfig = {
+            paginationConfig: {},
+            pageConfig: []
+        };
+        window.adminAuthenticated = false;
+
+        function parseAdminPhpResponse(text) {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                const startMarker = '/* ADMIN_CONFIG_START';
+                const endMarker = 'ADMIN_CONFIG_END */';
+                const start = text.indexOf(startMarker);
+                const end = text.indexOf(endMarker);
+                if (start === -1 || end === -1) {
+                    throw new Error('Config markers not found in admin.php');
+                }
+                const jsonStart = start + startMarker.length;
+                const jsonText = text.slice(jsonStart, end).trim();
+                return JSON.parse(jsonText);
+            }
+        }
+
+        async function loadAdminJson() {
+            try {
+                const res = await fetch(ADMIN_CONFIG_PATH + '?action=public_config&t=' + Date.now(), { cache: 'no-store' });
+                if (!res.ok) {
+                    throw new Error('Không tìm thấy admin.php');
+                }
+                const text = await res.text();
+                const data = parseAdminPhpResponse(text);
+
+                if (data && typeof data === 'object') {
+                    if (data.paginationConfig && typeof data.paginationConfig === 'object') {
+                        const cfg = data.paginationConfig;
+                        // Support both legacy keys and new keys used by frontend
+                        const categoriesPerPage = parseInt((cfg.categoriesPerPage ?? cfg.homeCategoriesPerPage), 10);
+                        const postsPerCategoryPage = parseInt((cfg.postsPerCategoryPage ?? cfg.categoryPostsPerPage), 10);
+                        if (!isNaN(categoriesPerPage) && categoriesPerPage > 0) {
+                            window.adminConfig.paginationConfig.categoriesPerPage = categoriesPerPage;
+                            window.adminConfig.paginationConfig.homeCategoriesPerPage = categoriesPerPage;
+                        }
+                        if (!isNaN(postsPerCategoryPage) && postsPerCategoryPage > 0) {
+                            window.adminConfig.paginationConfig.postsPerCategoryPage = postsPerCategoryPage;
+                            window.adminConfig.paginationConfig.categoryPostsPerPage = postsPerCategoryPage;
+                        }
+                    }
+                    if (data.pageConfig && Array.isArray(data.pageConfig)) {
+                        window.adminConfig.pageConfig = data.pageConfig;
+                        localStorage.setItem('appPageConfig', JSON.stringify(data.pageConfig));
+                    }
+                    if (data.contacts && Array.isArray(data.contacts)) {
+                        localStorage.setItem('adminContactFallback', JSON.stringify(data.contacts));
+                    }
+
+                    // Nếu server trả về cấu hình không đầy đủ, hãy dùng cấu hình fallback cục bộ nếu có.
+                    if ((!data.paginationConfig || typeof data.paginationConfig !== 'object') ||
+                        (!data.pageConfig || !Array.isArray(data.pageConfig))) {
+                        const storedFallback = localStorage.getItem('adminConfigFallback');
+                        if (storedFallback) {
+                            try {
+                                const fallbackData = JSON.parse(storedFallback);
+                                if ((!data.paginationConfig || typeof data.paginationConfig !== 'object') && fallbackData && fallbackData.paginationConfig && typeof fallbackData.paginationConfig === 'object') {
+                                    const cfg = fallbackData.paginationConfig;
+                                    const categoriesPerPage = parseInt((cfg.categoriesPerPage ?? cfg.homeCategoriesPerPage), 10);
+                                    const postsPerCategoryPage = parseInt((cfg.postsPerCategoryPage ?? cfg.categoryPostsPerPage), 10);
+                                    if (!isNaN(categoriesPerPage) && categoriesPerPage > 0) {
+                                        window.adminConfig.paginationConfig.categoriesPerPage = categoriesPerPage;
+                                        window.adminConfig.paginationConfig.homeCategoriesPerPage = categoriesPerPage;
+                                    }
+                                    if (!isNaN(postsPerCategoryPage) && postsPerCategoryPage > 0) {
+                                        window.adminConfig.paginationConfig.postsPerCategoryPage = postsPerCategoryPage;
+                                        window.adminConfig.paginationConfig.categoryPostsPerPage = postsPerCategoryPage;
+                                    }
+                                }
+                                if ((!data.pageConfig || !Array.isArray(data.pageConfig)) && fallbackData && Array.isArray(fallbackData.pageConfig)) {
+                                    window.adminConfig.pageConfig = fallbackData.pageConfig;
+                                }
+                            } catch (inner) {
+                                console.warn('Không đọc được adminConfigFallback khi merge cấu hình.', inner);
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Không load được admin.php, sử dụng cấu hình mặc định hoặc localStorage.', e);
+                try {
+                    const stored = localStorage.getItem('adminConfigFallback');
+                    if (stored) {
+                        const data = JSON.parse(stored);
+                        if (data && data.paginationConfig && typeof data.paginationConfig === 'object') {
+                            const cfg = data.paginationConfig;
+                            const categoriesPerPage = parseInt((cfg.categoriesPerPage ?? cfg.homeCategoriesPerPage), 10);
+                            const postsPerCategoryPage = parseInt((cfg.postsPerCategoryPage ?? cfg.categoryPostsPerPage), 10);
+                            if (!isNaN(categoriesPerPage) && categoriesPerPage > 0) {
+                                window.adminConfig.paginationConfig.categoriesPerPage = categoriesPerPage;
+                                window.adminConfig.paginationConfig.homeCategoriesPerPage = categoriesPerPage;
+                            }
+                            if (!isNaN(postsPerCategoryPage) && postsPerCategoryPage > 0) {
+                                window.adminConfig.paginationConfig.postsPerCategoryPage = postsPerCategoryPage;
+                                window.adminConfig.paginationConfig.categoryPostsPerPage = postsPerCategoryPage;
+                            }
+                        }
+                        if (Array.isArray(data.pageConfig)) {
+                            window.adminConfig.pageConfig = data.pageConfig;
+                        }
+                    }
+                } catch (innerErr) {
+                    console.warn('Không thể đọc cấu hình fallback từ localStorage.', innerErr);
+                }
+            }
+        }
+
+        async function saveAdminJson() {
+            try {
+                const response = await fetch(ADMIN_SAVE_PATH, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(window.adminConfig)
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || 'Lỗi HTTP ' + response.status);
+                }
+
+                const result = await response.json();
+                if (!result || result.status !== 'success') {
+                    throw new Error(result?.message || 'Lưu admin.php thất bại');
+                }
+                return result;
+            } catch (err) {
+                console.warn('Lưu admin.php không thành công, chuyển sang localStorage.', err);
+                try {
+                    localStorage.setItem('adminConfigFallback', JSON.stringify(window.adminConfig));
+                    return { status: 'success', message: 'Đã lưu tạm vào localStorage do không có server PHP.' };
+                } catch (storageErr) {
+                    throw new Error('Lưu cấu hình thất bại: ' + (storageErr.message || err.message));
+                }
+            }
+        }
+
+        async function adminFetch(body) {
+            const response = await fetch(ADMIN_SAVE_PATH, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify(body)
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || 'Lỗi HTTP ' + response.status);
+            }
+            const result = await response.json();
+            if (!result || result.status !== 'success') {
+                throw new Error(result?.message || 'Lỗi server không xác định');
+            }
+            return result;
+        }
+
+        async function verifyAdminPassword(password) {
+            if (!password || !password.trim()) {
+                throw new Error('Vui lòng nhập mật khẩu.');
+            }
+            const result = await adminFetch({ action: 'verify', password: password.trim() });
+            window.adminAuthenticated = true;
+            return result;
+        }
+
+        async function submitAdminKey() {
+            const input = document.getElementById('adminPasswordInput');
+            const msg = document.getElementById('adminAuthMsg');
+            if (!input || !msg) return;
+
+            const password = input.value.trim();
+            try {
+                await verifyAdminPassword(password);
+                window.adminAuthenticated = true;
+                document.getElementById('admin-auth-area').style.display = 'none';
+                document.getElementById('main-content-area').style.display = 'block';
+                msg.innerText = '';
+                input.value = '';
+                try {
+                    await loadContactEntries();
+                    await loadCommentEntries();
+                } catch (error) {
+                    console.warn('Không thể tải dữ liệu tự động sau khi đăng nhập:', error);
+                }
+            } catch (e) {
+                msg.innerText = 'Sai mật khẩu. Vui lòng thử lại.';
+                setTimeout(() => { msg.innerText = ''; }, 2000);
+                input.value = '';
+            }
+        }
+
+        async function changeAdminPassword(newPass) {
+            if (!newPass || !newPass.trim()) return;
+            return await adminFetch({ action: 'changePassword', adminPassword: newPass.trim() });
+        }
+
+        async function isAdminSessionAuthenticated() {
+            try {
+                const result = await adminFetch({ action: 'checkAuth' });
+                return result.authenticated === true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        async function promptSetAdminPassword() {
+            const newPass = prompt("Nhập mật khẩu mới (ít nhất 4 chữ số):", '');
+            if (!newPass) return;
+            if (!/^[0-9]{4,}$/.test(newPass.trim())) {
+                alert('Mật khẩu mới phải là số, tối thiểu 4 chữ số.');
+                return;
+            }
+            try {
+                await changeAdminPassword(newPass.trim());
+                alert('Đã thay đổi mật khẩu. Vui lòng đăng nhập lại.');
+                window.adminAuthenticated = false;
+                initAdminAuth();
+            } catch (e) {
+                alert('Lỗi lưu mật khẩu: ' + e.message);
+            }
+        }
+
+        function pressAdminKey(key) {
+            const input = document.getElementById('adminPasswordInput');
+            if (!input) return;
+            if (input.value.length >= 6) return;
+            input.value += key;
+        }
+
+        function clearAdminKey() {
+            const input = document.getElementById('adminPasswordInput');
+            const msg = document.getElementById('adminAuthMsg');
+            if (input) input.value = '';
+            if (msg) msg.innerText = '';
+        }
+
+        async function logoutAdmin() {
+            try {
+                await adminFetch({ action: 'logout' });
+            } catch (e) {
+                // ignore
+            }
+            window.adminAuthenticated = false;
+            document.getElementById('admin-auth-area').style.display = 'block';
+            document.getElementById('main-content-area').style.display = 'none';
+        }
+
+        async function initAdminAuth() {
+            window.adminUnlocked = false;
+            const auth = await isAdminSessionAuthenticated();
+            if (auth) {
+                document.getElementById('admin-auth-area').style.display = 'none';
+                document.getElementById('main-content-area').style.display = 'block';
+                window.adminUnlocked = true;
+                window.adminAuthenticated = true;
+                const isAutoReload = sessionStorage.getItem('adminAutoReload') === 'true';
+                if (isAutoReload) {
+                    sessionStorage.removeItem('adminAutoReload');
+                    setTimeout(() => {
+                        const scrollY = parseInt(localStorage.getItem('adminScrollY') || '0');
+                        window.scrollTo(0, scrollY);
+                    }, 100);
+                }
+                try {
+                    await loadContactEntries();
+                    await loadCommentEntries();
+                } catch (e) {
+                    console.warn('Không thể tải dữ liệu tự động sau khi xác thực:', e);
+                }
+                return;
+            }
+            document.getElementById('admin-auth-area').style.display = 'block';
+            document.getElementById('main-content-area').style.display = 'none';
+        }
+
+        // Hàm chuyển Excel timestamp sang Date ở múi giờ +7 (Asia/Ho_Chi_Minh)
+        function getHanoiDateFromExcelTimestamp(excelTimestamp) {
+            const ms = (excelTimestamp - 25569) * 86400 * 1000;
+            return new Date(ms + 7 * 3600000);
+        }
+
+        function toDatetimeLocalValue(date) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}T${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
+        }
+
+        function parseDatetimeLocalAsHanoi(value) {
+            if (!value) return null;
+            const [datePart, timePart] = value.split('T');
+            if (!datePart || !timePart) return null;
+            const [year, month, day] = datePart.split('-').map(Number);
+            const [hours, minutes] = timePart.split(':').map(Number);
+            if (!year || !month || !day || hours === undefined || minutes === undefined) return null;
+            const utcMs = Date.UTC(year, month - 1, day, hours, minutes) - 7 * 3600000;
+            return new Date(utcMs);
+        }
+
+        function getCurrentHanoiDate() {
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            return new Date(utc + 7 * 3600000);
+        }
+
+        // Hàm định dạng ngày tháng
+        function formatDate(excelTimestamp, shortYear = false) {
+            if (!excelTimestamp || excelTimestamp <= 0) return '-';
+            const date = getHanoiDateFromExcelTimestamp(excelTimestamp);
+            const day = String(date.getUTCDate()).padStart(2, '0');
+            const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+            const year = shortYear ? String(date.getUTCFullYear()).slice(-2) : date.getUTCFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        const POSTS_SHEET = 'posts';
+        const POSTS_PER_PAGE = 50;
+        const POSTS_STORAGE_KEY = 'adminPostsSheetFallback';
+        const POSTS_FALLBACK_FLAG_KEY = 'adminPostsSheetFallbackActive';
+        let postsSheet = [];
+        let postsSortDirection = 'desc';
+        let currentPostsPage = 1;
+
+        function loadPostsFromLocalBackup() {
+            const backup = localStorage.getItem(POSTS_STORAGE_KEY);
+            if (!backup) return false;
+            try {
+                const parsed = JSON.parse(backup);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    postsSheet = parsed;
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Không đọc được backup posts từ localStorage:', e);
+            }
+            return false;
+        }
+
+        async function loadPostsFromDataJson() {
+            const headerRow = ['ID', 'Tên bài viết', 'Link img', '(alt) img', 'Trích dẫn <p>', 'Nội dung bài viết', 'Chuyên mục', 'Tag', 'Thời gian', 'Link page'];
+            const defaultSheet = [headerRow];
+
+            const fetchPostFileRow = async (postId) => {
+                const url = '../assets/others/base-data/posts/' + encodeURIComponent(postId) + '.json?t=' + Date.now();
+                const res = await fetch(url, { cache: 'no-store' });
+                if (!res.ok) throw new Error('Không thể tải file bài viết: ' + postId);
+                const data = await res.json();
+                if (!data || typeof data !== 'object') throw new Error('Dữ liệu bài viết không hợp lệ: ' + postId);
+                return [
+                    data.id || '',
+                    data.title || '',
+                    data.img || '',
+                    data.imgAlt || '',
+                    data.excerpt || '',
+                    data.content || '',
+                    data.category || '',
+                    data.tag || '',
+                    data.time || '',
+                    data.linkPage || ''
+                ];
+            };
+
+            const loadRowsFromPostIds = async (postIds) => {
+                const rows = [];
+                for (const id of postIds) {
+                    if (!id || typeof id !== 'string') continue;
+                    try {
+                        const row = await fetchPostFileRow(id);
+                        rows.push(row);
+                    } catch (err) {
+                        console.warn('Không thể tải bài viết:', id, err);
+                    }
+                }
+                return defaultSheet.concat(rows);
+            };
+
+            const setPostsSheet = async (sheet) => {
+                postsSheet = sheet;
+                await syncCategories();
+                renderCategoryFilter();
+                renderPostsAdminTable();
+            };
+
+            const loadFromAdminPhp = async () => {
+                const res = await fetch('../assets/others/base-data/admin.php?action=getAllPosts&t=' + Date.now(), { cache: 'no-store' });
+                if (!res.ok) throw new Error('Failed to load from admin.php');
+                const data = await res.json();
+                if (!data || data.status !== 'success' || !Array.isArray(data.posts)) {
+                    throw new Error('Invalid response format from admin.php');
+                }
+                await setPostsSheet([headerRow].concat(data.posts));
+            };
+
+            const loadFromDataJsonFile = async () => {
+                const res = await fetch('../assets/others/base-data/data.json?v=' + Date.now() + '&t=' + new Date().getTime(), { cache: 'no-store' });
+                if (!res.ok) throw new Error('Không thể tải data.json');
+                const json = await res.json();
+
+                if (json && Array.isArray(json.posts) && json.posts.every(id => typeof id === 'string')) {
+                    await setPostsSheet(await loadRowsFromPostIds(json.posts));
+                    return;
+                }
+
+                if (json && Array.isArray(json[POSTS_SHEET])) {
+                    await setPostsSheet(json[POSTS_SHEET]);
+                    return;
+                }
+
+                throw new Error('Dữ liệu data.json không hợp lệ');
+            };
+
+            try {
+                await loadFromAdminPhp();
+                return;
+            } catch (err) {
+                console.warn('Failed to load from admin.php endpoint, trying direct data.json access:', err);
+            }
+
+            try {
+                await loadFromDataJsonFile();
+                return;
+            } catch (err) {
+                console.warn('Failed to load from data.json fallback:', err);
+            }
+
+            if (loadPostsFromLocalBackup()) {
+                console.log('Loaded posts from local backup');
+                postsSheet = postsSheet.length > 0 ? postsSheet : defaultSheet;
+                await syncCategories();
+                renderCategoryFilter();
+                renderPostsAdminTable();
+                return;
+            }
+
+            postsSheet = defaultSheet;
+            renderCategoryFilter();
+            renderPostsAdminTable();
+        }
+
+        function renderCategoryFilter() {
+            const select = document.getElementById('postCategoryFilter');
+            if (!select) return;
+
+            const currentValue = select.value;
+
+            const postRows = postsSheet.slice(1);
+
+            // Tạo unique categories case-insensitive
+            const categoryMap = new Map();
+            postRows.forEach(r => {
+                const cat = (r[6] || '').toString().trim();
+                if (cat) {
+                    const lower = cat.toLowerCase();
+                    if (!categoryMap.has(lower)) {
+                        categoryMap.set(lower, cat);
+                    }
+                }
+            });
+            const categories = Array.from(categoryMap.values()).sort((a, b) => a.localeCompare(b, 'vi', { sensitivity: 'base' }));
+
+            select.innerHTML = '<option value="">Tất cả chuyên mục</option>' + categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+            select.value = currentValue; // Restore selection
+
+            const categoryDatalist = document.getElementById('postCategoryDatalist');
+            if (categoryDatalist) {
+                categoryDatalist.innerHTML = categories.map(c => `<option value="${c}"></option>`).join('');
+            }
+
+            // Tạo unique tags case-insensitive
+            const tagMap = new Map();
+            postRows.forEach(r => {
+                const tags = (r[7] || '').toString().split(',').map(t => t.trim()).filter(v => v);
+                tags.forEach(tag => {
+                    const lower = tag.toLowerCase();
+                    if (!tagMap.has(lower)) {
+                        tagMap.set(lower, tag);
+                    }
+                });
+            });
+            const tags = Array.from(tagMap.values()).sort((a, b) => a.localeCompare(b, 'vi', { sensitivity: 'base' }));
+
+            const tagDatalist = document.getElementById('postTagDatalist');
+            if (tagDatalist) {
+                tagDatalist.innerHTML = tags.map(t => `<option value="${t}"></option>`).join('');
+            }
+        }
+
+        function getFilteredAndSortedPosts() {
+            const search = (document.getElementById('postSearchInput')?.value || '').trim().toLowerCase();
+            const category = (document.getElementById('postCategoryFilter')?.value || '').trim();
+
+            let rows = postsSheet.slice(1)
+                .filter(r => (r[1] || '').toString().trim() !== '')
+                .map((r, i) => ({ row: r, index: i + 1 }));
+
+            if (category) {
+                rows = rows.filter(item => (item.row[6] || '').toString().trim() === category);
+            }
+            if (search) {
+                rows = rows.filter(item => (item.row[1] || '').toString().toLowerCase().includes(search));
+            }
+
+            rows.sort((a, b) => {
+                const va = parseFloat(a.row[8]) || 0;
+                const vb = parseFloat(b.row[8]) || 0;
+                return postsSortDirection === 'asc' ? va - vb : vb - va;
+            });
+
+            return rows;
+        }
+
+        function renderPostsAdminTable() {
+            const tbody = document.getElementById('postsTableBody');
+            if (!tbody) return;
+
+            const items = getFilteredAndSortedPosts();
+            const totalPages = Math.max(1, Math.ceil(items.length / POSTS_PER_PAGE));
+            currentPostsPage = Math.min(Math.max(1, currentPostsPage), totalPages);
+
+            const pageItems = items.slice((currentPostsPage - 1) * POSTS_PER_PAGE, currentPostsPage * POSTS_PER_PAGE);
+
+            if (!pageItems.length) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color:#fff; text-align:center;">Không có bài viết nào.</td></tr>';
+                renderPostsPagination(totalPages);
+                return;
+            }
+
+            tbody.innerHTML = pageItems.map((item, index) => {
+                const row = item.row;
+                const id = (row[0] || '').toString();
+                const title = (row[1] || '').toString();
+                const category = (row[6] || '').toString();
+                const postTime = parseFloat(row[8]) || 0;
+                const dateText = formatDate(postTime, true);
+                const globalIndex = item.index;
+                return `<tr data-row-index="${globalIndex}">
+                    <td>${id}</td>
+                    <td><a href="/p/${id}" style="color:#00bcd4; text-decoration:none;">${title}</a></td>
+                    <td>${category}</td>
+                    <td style="text-align:center;">${dateText}</td>
+                    <td style="white-space:nowrap;">
+                        <button class="admin-btn small-btn" type="button" onclick="editPost(${globalIndex})" style="padding:4px 7px; font-size:0.8rem;" title="Sửa">✏️</button>
+                        <button class="admin-btn small-btn" type="button" onclick="deletePost(${globalIndex})" style="padding:4px 7px; font-size:0.8rem;" title="Xóa">✕</button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            renderPostsPagination(totalPages);
+        }
+
+        function renderPostsPagination(totalPages) {
+            const container = document.getElementById('postsPagination');
+            if (!container) return;
+
+            let html = '';
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            if (currentPostsPage > 1) {
+                html += `<button class="admin-btn small-btn" type="button" style="margin-right:6px;" onclick="setPostsPage(${currentPostsPage - 1})">&laquo; Trước</button>`;
+            }
+
+            const start = Math.max(1, currentPostsPage - 2);
+            const end = Math.min(totalPages, currentPostsPage + 2);
+
+            for (let i = start; i <= end; i++) {
+                const active = i === currentPostsPage ? 'background:#00bcd4; color:#0b0;' : '';
+                html += `<button class="admin-btn small-btn" type="button" style="margin-right:4px; ${active}" onclick="setPostsPage(${i})">${i}</button>`;
+            }
+
+            if (currentPostsPage < totalPages) {
+                html += `<button class="admin-btn small-btn" type="button" onclick="setPostsPage(${currentPostsPage + 1})">Tiếp &raquo;</button>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function setPostsPage(page) {
+            currentPostsPage = page;
+            renderPostsAdminTable();
+        }
+
+
+        function toggleSortByDate() {
+            postsSortDirection = postsSortDirection === 'asc' ? 'desc' : 'asc';
+            document.getElementById('sortDirectionText').innerText = postsSortDirection === 'asc' ? 'Tăng' : 'Giảm';
+            renderPostsAdminTable();
+        }
+
+        function getRowIndexFromId(id) {
+            if (!id) return null;
+            const index = postsSheet.findIndex((row, i) => i > 0 && (row[0] || '').toString().trim() === id.toString().trim());
+            return index > 0 ? index : null;
+        }
+
+        function normalizeRowIndex(value) {
+            const n = Number(value);
+            if (!isNaN(n) && n > 0 && n < postsSheet.length) {
+                return n;
+            }
+            return null;
+        }
+
+        function openPostModal(rowIndexOrId) {
+            let rowIndex = normalizeRowIndex(rowIndexOrId);
+            if (rowIndex === null && typeof rowIndexOrId === 'string') {
+                rowIndex = getRowIndexFromId(rowIndexOrId);
+            }
+
+            // Populate category select từ tất cả categories
+            renderCategorySelectOptions();
+            renderTagsSelectOptions();
+
+            const overlay = document.getElementById('postModal');
+            const title = document.getElementById('modalTitle');
+            const rowInput = document.getElementById('postRowIndex');
+
+            if (rowIndex !== null && postsSheet[rowIndex]) {
+                const row = postsSheet[rowIndex];
+                rowInput.value = rowIndex;
+                document.getElementById('postID').value = row[0] || '';
+                document.getElementById('postCategory').value = row[6] || '';
+                document.getElementById('postCategoryNew').value = '';
+                document.getElementById('postTitle').value = row[1] || '';
+                document.getElementById('postImageUrl').value = row[2] || '';
+                document.getElementById('postImageAlt').value = row[3] || '';
+                document.getElementById('postExcerpt').value = row[4] || '';
+                let content = row[5] || '';
+                content = content.replace(new RegExp('<!--nextpage-->', 'g'), '<p class="page-marker">--nextpage--</p>');
+                document.getElementById('postContent').innerHTML = content;
+
+                // Reset to WYSIWYG view
+                document.getElementById('postContent').style.display = 'block';
+                document.getElementById('postContentCode').style.display = 'none';
+                document.getElementById('editorToolbar').style.display = 'flex';
+                var visualBtn = document.getElementById('visualBtn');
+                if (visualBtn) visualBtn.remove();
+
+                // Xử lý tags
+                const existingTags = (row[7] || '').split(',').map(t => t.trim()).filter(t => t);
+                document.getElementById('postTags').value = (row[7] || '');
+                updatePostTagsList(existingTags);
+
+                // Chuyển đổi thời gian từ Excel number sang datetime-local
+                const excelTime = parseFloat(row[8]) || 0;
+                const timeInput = document.getElementById('postTime');
+                if (excelTime > 0) {
+                    const hanoiDate = getHanoiDateFromExcelTimestamp(excelTime);
+                    timeInput.value = toDatetimeLocalValue(hanoiDate);
+                } else {
+                    timeInput.value = '';
+                }
+
+                title.innerText = 'Chỉnh sửa bài viết';
+            } else {
+                rowInput.value = '';
+                document.getElementById('postID').value = '';
+                document.getElementById('postCategory').value = '';
+                document.getElementById('postCategoryNew').value = '';
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postImageUrl').value = '';
+                document.getElementById('postImageAlt').value = '';
+                document.getElementById('postExcerpt').value = '';
+                let content = '';
+                content = content.replace(new RegExp('<!--nextpage-->', 'g'), '<p class="page-marker">--nextpage--</p>');
+                document.getElementById('postContent').innerHTML = content;
+                document.getElementById('postTags').value = '';
+                document.getElementById('postTime').value = '';
+                document.getElementById('postTagsList').innerHTML = '';
+
+                // Reset to WYSIWYG view
+                document.getElementById('postContent').style.display = 'block';
+                document.getElementById('postContentCode').style.display = 'none';
+                document.getElementById('editorToolbar').style.display = 'flex';
+                var visualBtn = document.getElementById('visualBtn');
+                if (visualBtn) visualBtn.remove();
+
+                const editor = document.getElementById('postContent');
+                if (document.queryCommandSupported && document.queryCommandSupported('styleWithCSS')) {
+                    document.execCommand('styleWithCSS', false, false);
+                }
+                editor.innerHTML = '<p><br></p>';
+                editor.style.fontWeight = 'normal';
+                editor.style.fontStyle = 'normal';
+                editor.style.textDecoration = 'none';
+                const boldTags = editor.querySelectorAll('b, strong');
+                boldTags.forEach(tag => {
+                    const parent = tag.parentNode;
+                    while (tag.firstChild) {
+                        parent.insertBefore(tag.firstChild, tag);
+                    }
+                    parent.removeChild(tag);
+                });
+                editor.focus();
+                try {
+                    document.execCommand('bold', false, false);
+                    document.execCommand('bold', false, false);
+                } catch (e) { }
+                try {
+                    document.execCommand('italic', false, false);
+                    document.execCommand('italic', false, false);
+                } catch (e) { }
+                try {
+                    document.execCommand('underline', false, false);
+                    document.execCommand('underline', false, false);
+                } catch (e) { }
+                document.execCommand('removeFormat', false, null);
+                const range = document.createRange();
+                const firstParagraph = editor.querySelector('p');
+                if (firstParagraph) {
+                    range.setStart(firstParagraph, 0);
+                    range.collapse(true);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+
+                title.innerText = 'Thêm bài viết mới';
+            }
+
+            initializePostModalChangeTracking();
+            setPostModalClean();
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function getAllCategories() {
+            const postRows = postsSheet.slice(1);
+            const postCategories = postRows.map(r => (r[6] || '').toString().trim()).filter(v => v && v.toLowerCase() !== 'none');
+            const pageCategories = getPageConfig().map(p => (p.category || p.label || '').toString().trim()).filter(v => v && v.toLowerCase() !== 'none');
+
+            // Loại bỏ duplicate case-insensitive và trả về array
+            const categoryMap = new Map();
+            [...postCategories, ...pageCategories].forEach(cat => {
+                const lower = cat.toLowerCase();
+                if (!categoryMap.has(lower)) {
+                    categoryMap.set(lower, cat);
+                }
+            });
+            return Array.from(categoryMap.values());
+        }
+
+        async function syncCategories() {
+            const postRows = postsSheet.slice(1);
+            const postCategories = Array.from(new Set(postRows.map(r => (r[6] || '').toString().trim()).filter(v => v && v.toLowerCase() !== 'none')));
+            const pageConfig = getPageConfig();
+            const existingCategories = pageConfig.map(p => (p.category || p.label || '').toString().toLowerCase().trim());
+            const newCategories = postCategories.filter(cat => !existingCategories.includes(cat.toLowerCase()));
+            if (newCategories.length > 0) {
+                const maxOrder = pageConfig.length > 0 ? Math.max(...pageConfig.map(p => p.order || 0)) : 0;
+                newCategories.forEach((cat, index) => {
+                    pageConfig.push({ order: maxOrder + index + 1, label: cat, category: cat });
+                });
+                window.adminConfig.pageConfig = pageConfig;
+                localStorage.setItem('appPageConfig', JSON.stringify(pageConfig));
+                if (window.location.protocol !== 'file:') {
+                    try {
+                        await saveAdminJson();
+                        console.log('Đã thêm chuyên mục mới vào pageConfig:', newCategories);
+                    } catch (e) {
+                        console.error('Lỗi lưu admin.php khi sync categories:', e);
+                    }
+                } else {
+                    console.log('Đã thêm chuyên mục mới vào pageConfig (localStorage):', newCategories);
+                }
+            }
+        }
+
+        function renderCategorySelectOptions() {
+            const select = document.getElementById('postCategory');
+            if (!select) return;
+
+            const postRows = postsSheet.slice(1);
+            const postCategories = Array.from(new Set(postRows.map(r => (r[6] || '').toString().trim()).filter(v => v && v.toLowerCase() !== 'none')));
+            const pageCategories = getPageConfig().map(p => (p.category || p.label || '').toString().trim()).filter(v => v && v.toLowerCase() !== 'none');
+
+            // Tạo unique categories case-insensitive, giữ lại case đầu tiên xuất hiện
+            const categoryMap = new Map();
+            [...postCategories, ...pageCategories].forEach(cat => {
+                const lower = cat.toLowerCase();
+                if (!categoryMap.has(lower)) {
+                    categoryMap.set(lower, cat);
+                }
+            });
+            const uniqueCategories = Array.from(categoryMap.values());
+            uniqueCategories.sort((a, b) => a.localeCompare(b, 'vi', { sensitivity: 'base' }));
+
+            select.innerHTML = '<option value="" hidden>-- Chọn chuyên mục --</option>' +
+                '<option value="__new__">-- Thêm chuyên mục mới --</option>' +
+                '<option value="none">none</option>' +
+                uniqueCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+        }
+
+        function renderTagsSelectOptions() {
+            const select = document.getElementById('postTagsSelect');
+            if (!select) return;
+
+            const postRows = postsSheet.slice(1);
+            const tagMap = new Map();
+
+            postRows.forEach(r => {
+                const tags = (r[7] || '').split(',').map(t => t.trim()).filter(t => t);
+                tags.forEach(tag => {
+                    const lower = tag.toLowerCase();
+                    if (!tagMap.has(lower)) {
+                        tagMap.set(lower, tag);
+                    }
+                });
+            });
+
+            const tagList = Array.from(tagMap.values()).sort((a, b) => a.localeCompare(b, 'vi', { sensitivity: 'base' }));
+            select.innerHTML = '<option value="" hidden>-- Chọn tag --</option>' + tagList.map(t => `<option value="${t}">${t}</option>`).join('');
+
+            filterPostTagsSelect();
+
+            select.onchange = () => {
+                const selected = Array.from(select.selectedOptions).map(o => o.value.trim()).filter(v => v);
+                if (!selected.length) return;
+
+                const tagsField = document.getElementById('postTags');
+                const currentTags = tagsField.value ? tagsField.value.split(',').map(t => t.trim()).filter(t => t) : [];
+                selected.forEach(tag => {
+                    if (!currentTags.includes(tag)) currentTags.push(tag);
+                });
+                updatePostTagsList(currentTags);
+                select.selectedIndex = 0;
+            };
+        }
+
+        function filterPostTagsSelect() {
+            const filterInput = document.getElementById('postTagsSearch');
+            const select = document.getElementById('postTagsSelect');
+            if (!select) return;
+
+            const filter = filterInput ? filterInput.value.toLowerCase().trim() : '';
+            Array.from(select.options).forEach(option => {
+                if (!option.value) {
+                    option.style.display = '';
+                    return;
+                }
+                if (!filter || option.value.toLowerCase().includes(filter)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        function postCategoryChanged() {
+            const select = document.getElementById('postCategory');
+            const newContainer = document.getElementById('postCategoryNewContainer');
+            const newInput = document.getElementById('postCategoryNew');
+            if (select && newContainer) {
+                const isNew = select.value === '__new__';
+                newContainer.style.display = isNew ? 'block' : 'none';
+                if (!isNew && newInput) {
+                    newInput.value = '';
+                }
+            }
+        }
+
+        function addNewTag() {
+            const tagInput = document.getElementById('postTagInput');
+            const newTag = tagInput.value.trim();
+
+            if (!newTag) {
+                alert('Vui lòng nhập tên tag');
+                return;
+            }
+
+            const tagsField = document.getElementById('postTags');
+            const currentTags = tagsField.value ? tagsField.value.split(',').map(t => t.trim()).filter(t => t) : [];
+
+            const tagExists = currentTags.some(tag => tag.toLowerCase() === newTag.toLowerCase());
+            if (tagExists) {
+                alert(`Thẻ tag "${newTag}" đã tồn tại trong danh sách hiện tại.`);
+                tagInput.value = '';
+                return;
+            }
+
+            currentTags.push(newTag);
+            updatePostTagsList(currentTags);
+            tagInput.value = '';
+        }
+
+        function updatePostTagsList(tags) {
+            const tagsList = document.getElementById('postTagsList');
+            const tagsField = document.getElementById('postTags');
+
+            if (!tags || tags.length === 0) {
+                tagsList.innerHTML = '<span style="color:#888;">Chưa có tag nào được chọn</span>';
+                tagsField.value = '';
+                return;
+            }
+
+            const filteredTags = Array.from(new Set(tags.map(t => t.toString().trim()).filter(t => t)));
+            tagsField.value = filteredTags.join(', ');
+
+            tagsList.innerHTML = filteredTags.map(tag => {
+                const escapedTag = tag.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                return `<span style="display:inline-block; background:#00ffff; color:#000; padding:4px 8px; margin:2px; border-radius:3px;">
+                    ${tag}
+                    <button type="button" onclick="removeSelectedPostTag('${escapedTag}')" style="background:none; border:none; color:#000; cursor:pointer; font-weight:bold; margin-left:4px;">×</button>
+                </span>`;
+            }).join('');
+        }
+
+        function removeSelectedPostTag(tagToRemove) {
+            const tagsField = document.getElementById('postTags');
+            const tags = tagsField.value.split(',').map(t => t.trim()).filter(t => t);
+
+            const updatedTags = tags.filter(tag => tag !== tagToRemove);
+            updatePostTagsList(updatedTags);
+        }
+
+        function autoResizeTextarea(textarea) {
+            if (!textarea) return;
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.max(120, textarea.scrollHeight) + 'px';
+        }
+
+        let postModalHasUnsavedChanges = false;
+        let postModalSaveInProgress = false;
+        let postModalTrackingInitialized = false;
+
+        function markPostModalDirty() {
+            postModalHasUnsavedChanges = true;
+        }
+
+        function setPostModalClean() {
+            postModalHasUnsavedChanges = false;
+        }
+
+        function isPostModalActive() {
+            const overlay = document.getElementById('postModal');
+            return overlay && overlay.classList.contains('active');
+        }
+
+        function initializePostModalChangeTracking() {
+            if (postModalTrackingInitialized) return;
+            postModalTrackingInitialized = true;
+            const form = document.getElementById('postForm');
+            const overlay = document.getElementById('postModal');
+            const editor = document.getElementById('postContent');
+
+            if (form) {
+                form.addEventListener('input', markPostModalDirty);
+                form.addEventListener('change', markPostModalDirty);
+            }
+            if (editor) {
+                editor.addEventListener('input', markPostModalDirty);
+            }
+            document.addEventListener('keydown', function (event) {
+                if (!isPostModalActive()) return;
+                if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    saveCurrentPost();
+                }
+            });
+            if (overlay) {
+                overlay.addEventListener('click', function (event) {
+                    if (event.target === overlay) {
+                        attemptClosePostModal();
+                    }
+                });
+            }
+        }
+
+        function attemptClosePostModal() {
+            if (!isPostModalActive()) return;
+            if (postModalHasUnsavedChanges && !postModalSaveInProgress) {
+                const shouldSave = confirm('Bài viết chưa được lưu. Bạn có muốn lưu trước khi đóng?');
+                if (shouldSave) {
+                    saveCurrentPost();
+                    return;
+                }
+            }
+            forceClosePostModal();
+        }
+
+        function forceClosePostModal() {
+            const overlay = document.getElementById('postModal');
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+            setPostModalClean();
+        }
+
+        function closePostModal() {
+            forceClosePostModal();
+        }
+
+        function editPost(rowIndex) {
+            openPostModal(rowIndex);
+        }
+
+        async function deletePost(rowIndex) {
+            if (!confirm('Bạn có chắc muốn xóa bài viết này không?')) return;
+            if (!postsSheet[rowIndex]) return;
+
+            postsSheet.splice(rowIndex, 1);
+            refreshPostNumbers();
+            await savePostsToDataJson();
+            // Thêm delay để server hoàn tất lưu file
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await loadPostsFromDataJson();
+            await syncPageConfigWithPosts();
+            showAdminMessage('Đã xóa bài viết.');
+        }
+
+        async function saveCurrentPost() {
+            if (postModalSaveInProgress) return;
+            postModalSaveInProgress = true;
+            // Đảm bảo postsSheet đã được load
+            if (!postsSheet || postsSheet.length < 1) {
+                postModalSaveInProgress = false;
+                alert('Đang tải dữ liệu, vui lòng thử lại sau vài giây.');
+                return;
+            }
+
+            try {
+                let rowIndex = normalizeRowIndex(document.getElementById('postRowIndex').value);
+                const id = document.getElementById('postID').value.trim();
+                let category = document.getElementById('postCategory').value.trim();
+                const categoryNewValue = document.getElementById('postCategoryNew').value.trim();
+
+                if (category === '__new__') {
+                    if (!categoryNewValue) {
+                        alert('Vui lòng nhập tên chuyên mục mới.');
+                        return;
+                    }
+                    const existingCategories = getAllCategories();
+                    const matchedCategory = existingCategories.find(existingCat => existingCat.toLowerCase() === categoryNewValue.toLowerCase());
+                    if (matchedCategory) {
+                        alert(`Chuyên mục "${categoryNewValue}" đã tồn tại (không phân biệt chữ hoa/thường).`);
+                        return;
+                    }
+                    category = categoryNewValue;
+                    // Thêm category mới vào pageConfig
+                    const pageConfig = getPageConfig();
+                    pageConfig.push({ order: pageConfig.length + 1, label: category, category });
+                    window.adminConfig.pageConfig = pageConfig;
+                    localStorage.setItem('appPageConfig', JSON.stringify(pageConfig));
+                    await saveAdminJson();
+                }
+
+                if (!category) {
+                    alert('Vui lòng chọn hoặc nhập chuyên mục mới.');
+                    return;
+                }
+
+                // Kiểm tra trùng ID
+                if (id) {
+                    const existingIndex = getRowIndexFromId(id);
+                    if (existingIndex !== null) {
+                        if (rowIndex === null) {
+                            // Thêm mới, ID trùng
+                            alert('ID đã tồn tại. Vui lòng chọn ID khác.');
+                            return;
+                        } else if (existingIndex !== rowIndex) {
+                            // Chỉnh sửa, ID trùng với bài khác
+                            alert('ID đã tồn tại trong bài viết khác. Vui lòng chọn ID khác.');
+                            return;
+                        }
+                    }
+                }
+
+                const title = document.getElementById('postTitle').value.trim();
+                const imageUrl = document.getElementById('postImageUrl').value.trim();
+                const imageAlt = document.getElementById('postImageAlt').value.trim();
+                const excerpt = document.getElementById('postExcerpt').value.trim();
+                let content;
+                const editor = document.getElementById('postContent');
+                const codeArea = document.getElementById('postContentCode');
+                if (codeArea && codeArea.style.display !== 'none') {
+                    content = codeArea.value.trim();
+                } else {
+                    content = editor.innerHTML.trim();
+                }
+                // Always replace page markers back to comments
+                content = content.replace(new RegExp('<p class="page-marker">--nextpage--</p>', 'g'), '<!--nextpage-->');
+                const tags = document.getElementById('postTags').value.trim();
+
+                // Chuyển đổi datetime-local sang Excel timestamp
+                let excelTime = 0;
+                const datetimeLocal = document.getElementById('postTime').value;
+                if (datetimeLocal) {
+                    const dt = parseDatetimeLocalAsHanoi(datetimeLocal);
+                    if (dt) {
+                        excelTime = (dt.getTime() / (86400 * 1000)) + 25569;
+                    }
+                } else {
+                    const hanoiTime = getCurrentHanoiDate();
+                    excelTime = (hanoiTime.getTime() / (86400 * 1000)) + 25569;
+                }
+
+                if (!id || !category || !title) {
+                    alert('Vui lòng điền ID, Chuyên mục và Tiêu đề.');
+                    return;
+                }
+
+                const newRow = [
+                    id,
+                    title,
+                    imageUrl,
+                    imageAlt,
+                    excerpt,
+                    content,
+                    category,
+                    tags,
+                    excelTime.toString(),
+                    ''
+                ];
+
+                if (!isNaN(rowIndex) && rowIndex > 0 && rowIndex < postsSheet.length) {
+                    postsSheet[rowIndex] = newRow;
+                } else {
+                    postsSheet.push(newRow);
+                }
+
+                // No numeric row index column is stored in the current data schema.
+                // refreshPostNumbers() becomes a no-op to avoid overwriting IDs.
+
+                const saveSuccess = await savePostsToDataJson();
+                if (!saveSuccess) {
+                    alert('Lỗi lưu dữ liệu. Vui lòng thử lại.');
+                    return;
+                }
+                setPostModalClean();
+                // Update UI local
+                refreshPostNumbers();
+                renderPostsAdminTable();
+                await syncPageConfigWithPosts();
+                closePostModal();
+                showAdminMessage('Đã lưu bài viết.');
+                // Thử load lại từ server nếu có
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await loadPostsFromDataJson();
+                    renderPostsAdminTable();
+                } catch (err) {
+                    console.warn('Không thể load lại từ server:', err);
+                }
+            } finally {
+                postModalSaveInProgress = false;
+            }
+        }
+
+        async function savePostsToDataJson() {
+            try {
+                const res = await fetch('../assets/others/base-data/admin.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sheet: POSTS_SHEET, rows: postsSheet })
+                });
+
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error('admin.php HTTP ' + res.status + ': ' + text);
+                }
+
+                const json = await res.json();
+                if (!json || json.status !== 'success') {
+                    throw new Error('Lưu dữ liệu thất bại: ' + (json && json.message ? json.message : JSON.stringify(json)));
+                }
+
+                console.log('admin.php success:', json);
+                try {
+                    localStorage.removeItem(POSTS_FALLBACK_FLAG_KEY);
+                } catch (storageErr) {
+                    console.warn('Không thể xoá flag backup bài viết:', storageErr);
+                }
+                return true;
+            } catch (err) {
+                console.warn('Lỗi lưu posts (có thể không có server PHP):', err);
+                try {
+                    localStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(postsSheet));
+                    localStorage.setItem(POSTS_FALLBACK_FLAG_KEY, Date.now().toString());
+                } catch (storageErr) {
+                    console.warn('Không lưu được posts vào localStorage:', storageErr);
+                }
+                alert('Lưu local thành công. Dữ liệu bài viết được lưu tạm trong trình duyệt.');
+                return true;
+            }
+        }
+
+        function refreshPostNumbers() {
+            // Data schema no longer stores a numeric row number field.
+            // IDs are kept in row[0] and should not be auto-renumbered.
+        }
+
+        let adminToastTimeoutId = null;
+
+        function showAdminMessage(msg, isError = false) {
+            const toast = document.getElementById('adminToast');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.style.color = isError ? '#ff6e6e' : '#8affb5';
+            toast.style.display = 'block';
+            toast.style.opacity = '1';
+            if (adminToastTimeoutId) {
+                clearTimeout(adminToastTimeoutId);
+            }
+            adminToastTimeoutId = setTimeout(hideAdminMessage, 3000);
+
+            const msgEl = document.getElementById('postsAdminMsg');
+            if (msgEl) {
+                msgEl.innerText = msg;
+                msgEl.style.color = isError ? '#ff6e6e' : '#8affb5';
+            }
+        }
+
+        function hideAdminMessage() {
+            const toast = document.getElementById('adminToast');
+            if (!toast) return;
+            toast.style.display = 'none';
+            if (adminToastTimeoutId) {
+                clearTimeout(adminToastTimeoutId);
+                adminToastTimeoutId = null;
+            }
+        }
+
+        document.addEventListener('click', function () {
+            const toast = document.getElementById('adminToast');
+            if (!toast || toast.style.display !== 'block') return;
+            hideAdminMessage();
+        }, true);
+
+
+        // Hàm refresh manual data
+        function refreshPostsData() {
+            const msg = document.getElementById('postsAdminMsg');
+            if (msg) {
+                msg.innerText = 'Đang tải dữ liệu từ data.json...';
+                msg.style.color = '#fff';
+            }
+
+            loadPostsFromDataJson()
+                .then(() => {
+                    if (msg) {
+                        msg.innerText = '✓ Đã cập nhật dữ liệu từ data.json';
+                        msg.style.color = '#8affb5';
+                        setTimeout(() => { msg.innerText = ''; }, 3000);
+                    }
+                })
+                .catch(err => {
+                    if (msg) {
+                        msg.innerText = '✗ Lỗi tải dữ liệu: ' + err.message;
+                        msg.style.color = '#ff6e6e';
+                    }
+                    console.error('Refresh error:', err);
+                });
+        }
+
+        async function loadAdminConfig() {
+            await loadAdminJson();
+            try {
+                const cfg = window.adminConfig.paginationConfig || {};
+                const homeCats = cfg.homeCategoriesPerPage ?? cfg.categoriesPerPage;
+                const catPosts = cfg.categoryPostsPerPage ?? cfg.postsPerCategoryPage;
+                if (homeCats) document.getElementById('categoriesPerPage').value = homeCats;
+                if (catPosts) document.getElementById('postsPerCategoryPage').value = catPosts;
+                const autoChk = document.getElementById('autoSortByName');
+                if (autoChk) autoChk.checked = getAutoSortByName();
+            } catch (e) {
+                console.warn("Không load được cấu hình admin", e);
+            }
+        }
+
+        async function saveAdminConfig() {
+            const categoriesPerPage = parseInt(document.getElementById('categoriesPerPage').value) || 1;
+            const postsPerCategoryPage = parseInt(document.getElementById('postsPerCategoryPage').value) || 1;
+
+            // Save both legacy and new key names for compatibility with frontend and admin.php
+            window.adminConfig.paginationConfig = {
+                categoriesPerPage: categoriesPerPage,
+                homeCategoriesPerPage: categoriesPerPage,
+                postsPerCategoryPage: postsPerCategoryPage,
+                categoryPostsPerPage: postsPerCategoryPage
+            };
+
+            const cmsg = document.getElementById('configMsg');
+            try {
+                await saveAdminJson();
+                cmsg.textContent = 'Đã lưu cấu hình vào admin.php.';
+                cmsg.style.color = '#8affb5';
+            } catch (e) {
+                cmsg.textContent = 'Lỗi lưu cấu hình: ' + e.message;
+                cmsg.style.color = '#ff6e6e';
+                console.error(e);
+            }
+            setTimeout(() => cmsg.textContent = '', 3000);
+        }
+
+        function getAutoSortByName() {
+            return localStorage.getItem('appPageAutoSortByName') === 'true';
+        }
+
+        function setAutoSortByName(value) {
+            localStorage.setItem('appPageAutoSortByName', value ? 'true' : 'false');
+        }
+
+        function getDistinctPostCategories() {
+            const categories = [];
+            const seen = new Set();
+            for (let i = 1; i < postsSheet.length; i++) {
+                const cat = (postsSheet[i][6] || '').toString().trim();
+                if (!cat || cat.toLowerCase() === 'none') continue;
+                const lower = cat.toLowerCase();
+                if (!seen.has(lower)) {
+                    seen.add(lower);
+                    categories.push(cat);
+                }
+            }
+            return categories;
+        }
+
+        function getPageConfig() {
+            function normalizeConfig(configArray) {
+                const categoryMap = new Map();
+                const uniquePages = [];
+                configArray.forEach(page => {
+                    const cat = (page.category || page.label || '').toString().trim();
+                    const lower = cat.toLowerCase();
+                    if (cat && lower !== 'none' && !categoryMap.has(lower)) {
+                        categoryMap.set(lower, true);
+                        uniquePages.push({
+                            order: page.order || uniquePages.length + 1,
+                            label: page.label || cat,
+                            category: cat
+                        });
+                    }
+                });
+
+                uniquePages.sort((a, b) => (a.order || 0) - (b.order || 0));
+                if (getAutoSortByName()) {
+                    uniquePages.sort((a, b) => a.label.localeCompare(b.label, 'vi', { sensitivity: 'base' }));
+                }
+                return uniquePages;
+            }
+
+            try {
+                const stored = window.adminConfig.pageConfig;
+                if (Array.isArray(stored) && stored.length > 0) {
+                    return normalizeConfig(stored);
+                }
+
+                const appPageConfig = localStorage.getItem('appPageConfig');
+                if (appPageConfig) {
+                    const parsed = JSON.parse(appPageConfig);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        window.adminConfig.pageConfig = parsed;
+                        return normalizeConfig(parsed);
+                    }
+                }
+
+                const adminFallback = localStorage.getItem('adminConfigFallback');
+                if (adminFallback) {
+                    const parsed = JSON.parse(adminFallback);
+                    if (parsed && Array.isArray(parsed.pageConfig) && parsed.pageConfig.length > 0) {
+                        window.adminConfig.pageConfig = parsed.pageConfig;
+                        return normalizeConfig(parsed.pageConfig);
+                    }
+                }
+
+                const postCategories = getDistinctPostCategories();
+                if (postCategories.length > 0) {
+                    return postCategories.map((cat, index) => ({ order: index + 1, label: cat, category: cat }));
+                }
+            } catch (e) {
+                console.warn('Không đọc được pageConfig', e);
+            }
+            return [];
+        }
+
+        function moveRowUp(row) {
+            const prev = row.previousElementSibling;
+            if (prev && prev.classList.contains('page-config-row')) {
+                row.parentNode.insertBefore(row, prev);
+                updatePageOrderInput();
+            }
+        }
+
+        function moveRowDown(row) {
+            const next = row.nextElementSibling;
+            if (next && next.classList.contains('page-config-row')) {
+                row.parentNode.insertBefore(next, row);
+                updatePageOrderInput();
+            }
+        }
+
+        function updatePageOrderInput() {
+            const rows = document.querySelectorAll('#pageConfigArea .page-config-row');
+            rows.forEach((row, index) => {
+                row.dataset.order = index + 1;
+                const orderSpan = row.querySelector('.order-display');
+                if (orderSpan) {
+                    orderSpan.innerText = (index + 1) + '.';
+                }
+            });
+        }
+
+        function onAutoSortToggle() {
+            const checked = document.getElementById('autoSortByName').checked;
+            setAutoSortByName(checked);
+            renderPageConfig();
+            window.dispatchEvent(new Event('pageConfigChanged'));
+        }
+
+        function removePageConfigRow(row) {
+            if (!confirm('Bạn có chắc muốn xóa chuyên mục này không?')) return;
+            if (!row) return;
+            const categoryInput = row.querySelector('.page-name');
+            const removedCategory = categoryInput ? categoryInput.value.trim() : '';
+            row.remove();
+            updatePageOrderInput();
+
+            const configRows = document.querySelectorAll('#pageConfigArea .page-config-row');
+            const config = [];
+            configRows.forEach((row, index) => {
+                const name = row.querySelector('.page-name').value.trim();
+                if (name) {
+                    config.push({ order: index + 1, label: name, category: name });
+                }
+            });
+            window.adminConfig.pageConfig = config;
+            localStorage.setItem('appPageConfig', JSON.stringify(config));
+            saveAdminJson().catch(() => {
+                console.warn('Không lưu được pageConfig lên server');
+            });
+
+            if (removedCategory && removedCategory.toLowerCase() !== 'none') {
+                for (let i = 1; i < postsSheet.length; i++) {
+                    if ((postsSheet[i][6] || '').toString().trim().toLowerCase() === removedCategory.toLowerCase()) {
+                        postsSheet[i][6] = '';
+                    }
+                }
+                savePostsToDataJson().then(() => loadPostsFromDataJson());
+            }
+
+            renderPageLinks();
+            renderDynamicMenu();
+            if (typeof loadDynamicContent === 'function') {
+                loadDynamicContent();
+            }
+            if (typeof initPagesList === 'function') {
+                initPagesList();
+            }
+        }
+
+        function getTags() {
+            try {
+                const stored = localStorage.getItem('appTags');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        // Loại bỏ duplicate case-insensitive, giữ lại case đầu tiên
+                        const tagMap = new Map();
+                        parsed.forEach(tag => {
+                            const lower = tag.toLowerCase();
+                            if (!tagMap.has(lower)) {
+                                tagMap.set(lower, tag);
+                            }
+                        });
+                        return Array.from(tagMap.values()).sort((a, b) => a.localeCompare(b, 'vi', { sensitivity: 'base' }));
+                    }
+                }
+            } catch (e) {
+                console.warn('Không đọc được appTags', e);
+            }
+            return [];
+        }
+
+        function saveTags(tags) {
+            // Loại bỏ duplicate case-insensitive trước khi lưu
+            const tagMap = new Map();
+            tags.forEach(tag => {
+                const lower = tag.toLowerCase();
+                if (!tagMap.has(lower)) {
+                    tagMap.set(lower, tag);
+                }
+            });
+            const uniqueTags = Array.from(tagMap.values());
+            localStorage.setItem('appTags', JSON.stringify(uniqueTags));
+            renderTagArea();
+            const msg = document.getElementById('tagMsg');
+            msg.textContent = 'Đã lưu thẻ bài viết.';
+            msg.style.color = '#8affb5';
+            setTimeout(() => msg.textContent = '', 3000);
+            // sync menu
+            window.dispatchEvent(new Event('tagsChanged'));
+        }
+
+        function addTag() {
+            const input = document.getElementById('newTagInput');
+            const tag = input.value.trim();
+            if (!tag) return;
+            const tags = getTags();
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+                saveTags(tags);
+                input.value = '';
+            } else {
+                alert('Thẻ đã tồn tại!');
+            }
+        }
+
+        function removeAppTag(tag) {
+            const tags = getTags();
+            const index = tags.indexOf(tag);
+            if (index > -1) {
+                tags.splice(index, 1);
+                saveTags(tags);
+            }
+        }
+
+        async function loadContactEntries() {
+            const tableBody = document.getElementById('contactTableBody');
+            const msg = document.getElementById('contactMsg');
+            tableBody.innerHTML = '';
+            msg.textContent = 'Đang tải...';
+            try {
+                const res = await fetch(ADMIN_CONFIG_PATH + '?action=get_contacts&v=' + Date.now(), {
+                    cache: 'no-store',
+                    credentials: 'same-origin'
+                });
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    throw new Error(errorText || 'Không đọc được admin.php');
+                }
+                const data = await res.json();
+                if (!data || data.status !== 'success') {
+                    throw new Error(data?.message || 'Không lấy được danh sách liên hệ');
+                }
+                const contacts = Array.isArray(data.contacts) ? data.contacts : [];
+
+                if (contacts.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="color:#aaa;text-align:center;">Chưa có liên hệ nào.</td></tr>';
+                } else {
+                    contacts.forEach((item, idx) => {
+                        const row = document.createElement('tr');
+                        const timeText = item.time ? (typeof item.time === 'number' ? formatDate(item.time, true) : item.time) : '-';
+                        row.innerHTML = `
+                            <td>${idx + 1}</td>
+                            <td>${item.name || ''}</td>
+                            <td style="white-space: normal;">${item.message || ''}</td>
+                            <td style="text-align:center;">${timeText}</td>
+                            <td><button class="admin-btn small-btn" onclick="deleteContactEntry(${idx})" style="padding:4px 6px; font-size:0.75rem;">Xóa</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+                msg.textContent = 'Đã tải xong ' + contacts.length + ' liên hệ.';
+                msg.style.color = '#8affb5';
+            } catch (error) {
+                const fallback = localStorage.getItem('adminContactFallback');
+                let contacts = [];
+                if (fallback) {
+                    try {
+                        contacts = JSON.parse(fallback);
+                    } catch (e) {
+                        contacts = [];
+                    }
+                }
+                if (contacts.length > 0) {
+                    contacts.forEach((item, idx) => {
+                        const row = document.createElement('tr');
+                        const timeText = item.time ? (typeof item.time === 'number' ? formatDate(item.time, true) : item.time) : '-';
+                        row.innerHTML = `
+                            <td>${idx + 1}</td>
+                            <td>${item.name || ''}</td>
+                            <td style="white-space: normal;">${item.message || ''}</td>
+                            <td style="text-align:center;">${timeText}</td>
+                            <td><button class="admin-btn small-btn" onclick="deleteContactEntry(${idx})" style="padding:4px 6px; font-size:0.75rem;">Xóa</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                    msg.textContent = 'Đã tải dữ liệu liên hệ tạm từ localStorage.';
+                    msg.style.color = '#8affb5';
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="color:#f88;text-align:center;">Lỗi: ' + error.message + '</td></tr>';
+                    msg.textContent = 'Lỗi tải contact: ' + error.message;
+                    msg.style.color = '#ff6e6e';
+                }
+            }
+        }
+
+        function formatCommentDateValue(ts) {
+            if (!ts) return '-';
+            const value = typeof ts === 'number' ? ts : Number(ts);
+            if (!Number.isFinite(value)) return ts;
+            const date = new Date(value);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = String(date.getFullYear());
+            return `${day}/${month}<br>${year}`;
+        }
+
+        // Helper: Get post title by ID
+        async function getPostTitleById(postId) {
+            try {
+                if (!window.allPostsData) {
+                    const res = await fetch('../assets/others/base-data/admin.php?action=get_posts&page=1&v=' + Date.now());
+                    const data = await res.json();
+                    window.allPostsData = {};
+                    if (data.posts) {
+                        data.posts.forEach(p => {
+                            window.allPostsData[p[0]] = p[1];
+                        });
+                    }
+                }
+                return window.allPostsData[postId] || postId || 'N/A';
+            } catch (e) {
+                return postId || 'N/A';
+            }
+        }
+
+        // Helper: Map comment status to internal status key
+        function getCommentStatusValue(item) {
+            const status = String(item.status || 'pending').toLowerCase();
+            const hidden = Boolean(item.hidden);
+
+            if (hidden && status === 'hidden') {
+                return 'hidden';
+            }
+            if (hidden) {
+                return 'pending_delete';
+            }
+            if (status === 'approved') {
+                return 'approved';
+            }
+            return 'pending_register';
+        }
+
+        function getStatusLabel(value) {
+            switch (value) {
+                case 'approved':
+                    return 'Đã duyệt';
+                case 'pending_register':
+                    return 'Chờ duyệt đăng';
+                case 'pending_delete':
+                    return 'Chờ duyệt xóa';
+                case 'hidden':
+                    return 'Ẩn';
+                default:
+                    return 'Chờ duyệt đăng';
+            }
+        }
+
+        // Helper: Render action buttons in 2x1 vertical stack
+        function renderActionButtons(item) {
+            const id = item.id || '';
+            const editBtn = `<button class="admin-btn small-btn" title="Sửa" type="button" onclick="showEditCommentModal('${id}')" style="color:#3b82f6; padding:4px 6px; min-width:auto;">✏️</button>`;
+            const deleteBtn = `<button class="admin-btn small-btn" title="Xóa" type="button" onclick="deleteComment('${id}')" style="color:#ef4444; padding:4px 6px; min-width:auto;">×</button>`;
+            return `<div style="display:flex; flex-direction:column; gap:4px; align-items:center; justify-content:center; min-width:0;">
+                ${editBtn}
+                ${deleteBtn}
+            </div>`;
+        }
+
+        async function loadCommentEntries() {
+            const tableBody = document.getElementById('commentTableBody');
+            const msg = document.getElementById('commentMsg');
+            if (!tableBody || !msg) return;
+            tableBody.innerHTML = '';
+            msg.textContent = 'Đang tải comment...';
+            msg.style.color = '#fff';
+            try {
+                const result = await adminFetch({ action: 'get_admin_comments' });
+                const comments = Array.isArray(result.comments) ? result.comments : [];
+                if (comments.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="color:#aaa;text-align:center;">Chưa có comment nào.</td></tr>';
+                    msg.textContent = 'Không có comment nào.';
+                    msg.style.color = '#8affb5';
+                    return;
+                }
+
+                // Remove duplicate comments by `id` (sometimes config may contain duplicates)
+                const seenIds = new Set();
+                const uniqueComments = [];
+                for (const it of comments) {
+                    const cid = String(it.id || '').trim();
+                    if (!cid) continue;
+                    if (seenIds.has(cid)) continue;
+                    seenIds.add(cid);
+                    // normalize postId to a trimmed string for reliable matching
+                    it.postId = (it.postId || '').toString().trim();
+                    uniqueComments.push(it);
+                }
+
+                const rowsHtml = await Promise.all(uniqueComments.map(async (item) => {
+                    const dateText = formatCommentDateValue(item.createdAt);
+                    const statusValue = getCommentStatusValue(item);
+                    const normalizedPostId = (item.postId || '').toString().trim();
+                    const postTitle = await getPostTitleById(normalizedPostId);
+                    const searchText = `${dateText} ${item.name || ''} ${postTitle || ''} ${item.content || ''}`.toLowerCase();
+                    const actionBtns = renderActionButtons(item);
+
+                    const dataPostAttr = escapeHtml(((normalizedPostId || '') + ' ' + (postTitle || '')).toLowerCase());
+                    const displayPostTitle = escapeHtml(postTitle || normalizedPostId || 'N/A');
+
+                    return `<tr data-content="${escapeHtml((item.content || '').toLowerCase())}" data-status="${statusValue}" data-post="${dataPostAttr}" data-id="${item.id || ''}">
+    <td style="width:33%;"><a href="../p/${encodeURIComponent(normalizedPostId)}/" target="_blank" rel="noopener noreferrer" style="color:#00dcff; text-decoration:none;">${displayPostTitle}</a></td>
+    <td style="width:34%; white-space: normal; text-align:left; max-height:5.6em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical;">${escapeHtml(item.content || '')}${item.replyToName ? '<br><span style="color:#8affb5; font-size:0.85em;">↩ Trả lời ' + escapeHtml(item.replyToName) + '</span>' : ''}</td>
+    <td style="width:16.5%; text-align:center;">${getStatusLabel(statusValue)}</td>
+    <td class="action-cell" style="width:16.5%;">${actionBtns}</td>
+</tr>`;
+                }));
+
+                tableBody.innerHTML = rowsHtml.join('');
+                msg.textContent = 'Đã tải ' + comments.length + ' comment.';
+                msg.style.color = '#8affb5';
+            } catch (error) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="color:#f88;text-align:center;">Lỗi: ' + escapeHtml(error.message) + '</td></tr>';
+                msg.textContent = 'Lỗi tải comment: ' + error.message;
+                msg.style.color = '#ff6e6e';
+            }
+        }
+
+        function openPostInNewWindow(postId) {
+            const url = `../p/${encodeURIComponent(postId)}/`;
+            window.open(url, '_blank');
+        }
+
+        const editCommentModalState = {
+            original: null,
+            active: false
+        };
+
+        function showEditCommentModal(commentId) {
+            const form = document.getElementById('editCommentForm');
+            const overlay = document.getElementById('editCommentModal');
+            const commentPost = document.getElementById('editCommentPost');
+            const commentName = document.getElementById('editCommentName');
+            const commentTime = document.getElementById('editCommentTime');
+            const commentStatus = document.getElementById('editCommentStatus');
+            const commentReply = document.getElementById('editCommentReplyToName');
+            const commentContent = document.getElementById('editCommentContent');
+            const modalTitle = document.getElementById('editCommentModalTitle');
+            if (!overlay || !form || !commentPost || !commentName || !commentTime || !commentStatus || !commentReply || !commentContent || !modalTitle) return;
+            adminFetch({ action: 'get_admin_comments' }).then(async result => {
+                const comments = Array.isArray(result.comments) ? result.comments : [];
+                const item = comments.find(c => c.id === commentId);
+                if (!item) return;
+                const postTitle = await getPostTitleById(item.postId);
+                modalTitle.textContent = 'Chỉnh sửa comment';
+                commentPost.value = postTitle || item.postId || 'N/A';
+                commentName.value = item.name || '';
+                commentTime.value = formatCommentDateTimeLocal(item.createdAt);
+                commentStatus.value = getCommentStatusValue(item);
+                commentContent.value = item.content || '';
+                commentReply.innerHTML = '<option value="">-- Giữ nguyên / không reply --</option>' + comments.map(c => {
+                    const name = escapeHtml(c.name || '');
+                    return `<option value="${name}">${name}</option>`;
+                }).join('');
+                commentReply.value = item.replyToName || '';
+                editCommentModalState.original = { id: item.id, name: item.name || '', content: item.content || '', replyToName: item.replyToName || '', status: getCommentStatusValue(item), createdAt: item.createdAt };
+                overlay.classList.add('active');
+                editCommentModalState.active = true;
+                commentContent.focus();
+                window.addEventListener('keydown', editCommentModalKeydown);
+            }).catch(error => {
+                alert('Không tải được thông tin comment: ' + error.message);
+            });
+        }
+
+        function editCommentModalKeydown(event) {
+            if (!editCommentModalState.active) return;
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+                event.preventDefault();
+                saveEditCommentModal();
+            }
+        }
+
+        function attemptCloseEditCommentModal() {
+            const overlay = document.getElementById('editCommentModal');
+            if (!overlay) return;
+            if (isEditCommentFormDirty()) {
+                if (!confirm('Bạn có muốn lưu thay đổi trước khi đóng không?')) {
+                    overlay.classList.remove('active');
+                    editCommentModalState.active = false;
+                    window.removeEventListener('keydown', editCommentModalKeydown);
+                    return;
+                }
+                saveEditCommentModal();
+                return;
+            }
+            overlay.classList.remove('active');
+            editCommentModalState.active = false;
+            window.removeEventListener('keydown', editCommentModalKeydown);
+        }
+
+        function parseDateTimeLocal(value) {
+            const date = new Date(value);
+            return Number.isFinite(date.getTime()) ? date.getTime() : null;
+        }
+
+        function isEditCommentFormDirty() {
+            if (!editCommentModalState.original) return false;
+            const commentName = document.getElementById('editCommentName');
+            const commentTime = document.getElementById('editCommentTime');
+            const commentStatus = document.getElementById('editCommentStatus');
+            const commentReply = document.getElementById('editCommentReplyToName');
+            const commentContent = document.getElementById('editCommentContent');
+            if (!commentReply || !commentContent || !commentName || !commentTime || !commentStatus) return false;
+            return commentName.value.trim() !== (editCommentModalState.original.name || '')
+                || commentReply.value.trim() !== (editCommentModalState.original.replyToName || '')
+                || commentContent.value !== (editCommentModalState.original.content || '')
+                || commentStatus.value !== (editCommentModalState.original.status || '')
+                || parseDateTimeLocal(commentTime.value) !== Number(editCommentModalState.original.createdAt || 0);
+        }
+
+        function formatCommentDateTimeLocal(ts) {
+            if (!ts) return '';
+            const date = new Date(typeof ts === 'number' ? ts : Number(ts));
+            if (!Number.isFinite(date.getTime())) return '';
+            const pad = num => String(num).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        async function saveEditCommentModal() {
+            const commentId = editCommentModalState.original?.id;
+            const commentName = document.getElementById('editCommentName');
+            const commentTime = document.getElementById('editCommentTime');
+            const commentStatus = document.getElementById('editCommentStatus');
+            const commentReply = document.getElementById('editCommentReplyToName');
+            const commentContent = document.getElementById('editCommentContent');
+            if (!commentId || !commentName || !commentTime || !commentStatus || !commentReply || !commentContent) return;
+            const name = commentName.value.trim();
+            const replyToName = commentReply.value.trim();
+            const content = commentContent.value.trim();
+            const status = commentStatus.value;
+            const createdAt = parseDateTimeLocal(commentTime.value) || editCommentModalState.original.createdAt;
+            if (!name) {
+                alert('Họ tên không được để trống.');
+                return;
+            }
+            if (!content) {
+                alert('Nội dung comment không được để trống.');
+                return;
+            }
+            try {
+                await adminFetch({ action: 'edit_comment', id: commentId, name, content, replyToName, status, createdAt });
+                await loadCommentEntries();
+                const overlay = document.getElementById('editCommentModal');
+                if (overlay) {
+                    overlay.classList.remove('active');
+                    editCommentModalState.active = false;
+                }
+                window.removeEventListener('keydown', editCommentModalKeydown);
+            } catch (error) {
+                alert('Lưu comment thất bại: ' + error.message);
+            }
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function filterCommentTable() {
+            const content = (document.getElementById('commentFilterContent')?.value || '').toLowerCase();
+            const postFilter = (document.getElementById('commentFilterPost')?.value || '').toLowerCase();
+            const statusFilter = (document.getElementById('commentFilterStatus')?.value || '').toLowerCase();
+            document.querySelectorAll('#commentTableBody tr').forEach(row => {
+                const rowContent = (row.dataset.content || '').toLowerCase();
+                const rowPost = (row.dataset.post || '').toLowerCase();
+                const rowStatus = (row.dataset.status || '').toLowerCase();
+                const matchesContent = !content || rowContent.includes(content);
+                const matchesPost = !postFilter || rowPost.includes(postFilter);
+                const matchesStatus = !statusFilter || rowStatus === statusFilter;
+                if (matchesContent && matchesPost && matchesStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        async function refreshCommentEntries() {
+            await loadCommentEntries();
+        }
+
+        async function approveComment(id) {
+            try {
+                await adminFetch({ action: 'approve_comment', id });
+                await loadCommentEntries();
+            } catch (error) {
+                alert(error.message || 'Không duyệt được comment');
+            }
+        }
+
+        async function unapproveComment(id) {
+            try {
+                await adminFetch({ action: 'unapprove_comment', id });
+                await loadCommentEntries();
+            } catch (error) {
+                alert(error.message || 'Không bỏ duyệt được comment');
+            }
+        }
+
+        async function toggleCommentHidden(id) {
+            try {
+                await adminFetch({ action: 'toggle_comment_hidden', id });
+                await loadCommentEntries();
+            } catch (error) {
+                alert(error.message || 'Không thay đổi được trạng thái');
+            }
+        }
+
+        async function deleteComment(id) {
+            if (!confirm('Xóa comment này?')) return;
+            try {
+                await adminFetch({ action: 'delete_comment', id });
+                await loadCommentEntries();
+            } catch (error) {
+                alert(error.message || 'Không xóa được comment');
+            }
+        }
+
+        async function editComment(id) {
+            const comments = await adminFetch({ action: 'get_admin_comments' }).then(r => r.comments || []);
+            const item = comments.find(c => c.id === id);
+            if (!item) return;
+            const newName = prompt('Sửa họ tên:', item.name || '');
+            if (newName === null) return;
+            const newContent = prompt('Sửa nội dung comment:', item.content || '');
+            if (newContent === null) return;
+            const newReply = prompt('Sửa người được reply (để trống nếu không có):', item.replyToName || '');
+            if (newReply === null) return;
+            await adminFetch({ action: 'edit_comment', id, name: newName.trim(), content: newContent.trim(), replyToName: newReply.trim() });
+            await loadCommentEntries();
+        }
+
+        async function saveContactEntries(contacts) {
+            try {
+                const res = await fetch(ADMIN_SAVE_PATH, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contacts: contacts || [] })
+                });
+                if (!res.ok) throw new Error('admin.php lỗi HTTP ' + res.status);
+                const text = await res.text();
+                let json;
+                try {
+                    json = JSON.parse(text);
+                } catch (e) {
+                    const parsed = parseAdminPhpResponse(text);
+                    json = parsed;
+                }
+                if (!json || json.status !== 'success') throw new Error(json.message || 'Lưu thất bại');
+                localStorage.setItem('adminContactFallback', JSON.stringify(contacts || []));
+                await loadContactEntries();
+                return true;
+            } catch (e) {
+                try {
+                    localStorage.setItem('adminContactFallback', JSON.stringify(contacts || []));
+                    await loadContactEntries();
+                    return true;
+                } catch (storageErr) {
+                    const msg = document.getElementById('contactMsg');
+                    if (msg) {
+                        msg.textContent = 'Lỗi lưu contact: ' + e.message;
+                        msg.style.color = '#ff6e6e';
+                    }
+                    return false;
+                }
+            }
+        }
+
+        async function deleteContactEntry(index) {
+            if (!confirm('Bạn có chắc muốn xóa liên hệ này không?')) return;
+            let contacts = [];
+            try {
+                const res = await fetch(ADMIN_CONFIG_PATH + '?action=get_contacts&v=' + Date.now(), {
+                    cache: 'no-store',
+                    credentials: 'same-origin'
+                });
+                if (!res.ok) throw new Error('Không đọc được admin.php');
+                const data = await res.json();
+                contacts = Array.isArray(data.contacts) ? data.contacts : [];
+            } catch (error) {
+                const fallback = localStorage.getItem('adminContactFallback');
+                if (fallback) {
+                    try {
+                        contacts = JSON.parse(fallback);
+                    } catch (e) {
+                        contacts = [];
+                    }
+                }
+            }
+
+            if (!Array.isArray(contacts)) {
+                contacts = [];
+            }
+            if (index < 0 || index >= contacts.length) {
+                console.warn('Chỉ số liên hệ không hợp lệ:', index);
+                return;
+            }
+            contacts.splice(index, 1);
+            await saveContactEntries(contacts);
+        }
+
+        async function clearContactEntries() {
+            if (!confirm('Bạn có chắc chắn muốn xóa hết liên hệ?')) return;
+            await saveContactEntries([]);
+            const msg = document.getElementById('contactMsg');
+            if (msg) {
+                msg.textContent = 'Đã xóa tất cả liên hệ.';
+                msg.style.color = '#8affb5';
+            }
+        }
+
+        function renderTagArea() {
+            const area = document.getElementById('tagArea');
+            const tags = getTags();
+            area.innerHTML = '';
+            if (tags.length === 0) {
+                area.innerHTML = '<p>Chưa có thẻ nào.</p>';
+                return;
+            }
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.style = 'display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; padding:5px; background:rgba(255,255,255,0.1); border-radius:5px;';
+                div.innerHTML = `
+                    <span>${tag}</span>
+                    <button class="admin-btn small-btn" onclick="removeAppTag('${tag.replace(/'/g, "\\'")}')">X</button>
+                `;
+                area.appendChild(div);
+            });
+        }
+
+        async function savePageConfig() {
+            updatePageOrderInput();
+            const oldConfig = getPageConfig();
+            const oldCategories = oldConfig.map(item => (item.category || item.label || '').toString().trim()).filter(c => c);
+
+            const rows = document.querySelectorAll('#pageConfigArea .page-config-row');
+            const config = [];
+            rows.forEach(row => {
+                const order = parseInt(row.dataset.order) || 0;
+                const name = row.querySelector('.page-name').value.trim();
+                if (order > 0 && name) {
+                    config.push({ order, label: name, category: name });
+                }
+            });
+
+            config.sort((a, b) => a.order - b.order);
+            const newCategories = config.map(item => item.category.toString().trim()).filter(c => c);
+
+            // Kiểm tra trùng lặp trong pageConfig mới (case-insensitive)
+            const seenLower = new Set();
+            for (const newCat of newCategories) {
+                const lower = newCat.toLowerCase();
+                if (seenLower.has(lower)) {
+                    alert(`Chuyên mục "${newCat}" bị trùng trong danh sách. Vui lòng dùng tên khác.`);
+                    return;
+                }
+                seenLower.add(lower);
+            }
+
+            // Kiểm tra trùng lặp với các chuyên mục đã tồn tại trong dữ liệu
+            const existingCategories = getAllCategories();
+            for (const newCat of newCategories) {
+                const isDuplicate = existingCategories.some(existingCat => existingCat.toLowerCase() === newCat.toLowerCase());
+                if (isDuplicate && !oldCategories.some(oldCat => oldCat.toLowerCase() === newCat.toLowerCase())) {
+                    alert(`Chuyên mục "${newCat}" đã tồn tại (không phân biệt chữ hoa/thường).`);
+                    return;
+                }
+            }
+
+            const renameMap = {};
+            const normalizedNewCategories = newCategories.map(c => c.toLowerCase());
+            rows.forEach(row => {
+                const originalCat = (row.dataset.originalCategory || row.querySelector('.page-name').value || '').trim();
+                const newCat = row.querySelector('.page-name').value.trim();
+                const originalLower = originalCat.toLowerCase();
+                const newLower = newCat.toLowerCase();
+                if (originalCat && newCat && originalLower !== newLower) {
+                    renameMap[originalLower] = newCat;
+                }
+            });
+
+            for (let i = 1; i < postsSheet.length; i++) {
+                const rowCat = (postsSheet[i][6] || '').toString().trim();
+                if (!rowCat) continue;
+
+                const lowerRowCat = rowCat.toLowerCase();
+                if (renameMap[lowerRowCat]) {
+                    postsSheet[i][6] = renameMap[lowerRowCat];
+                } else if (!normalizedNewCategories.includes(lowerRowCat) && lowerRowCat !== 'none') {
+                    // Xóa category bị loại (trừ "none" - chuyên mục đặc biệt)
+                    postsSheet[i][6] = '';
+                }
+            }
+
+            window.adminConfig.pageConfig = config;
+            await saveAdminJson();
+            await loadAdminJson();
+            try {
+                localStorage.setItem('appPageConfig', JSON.stringify(config));
+                // Trigger storage event in same tab for mobile devices
+                localStorage.setItem('pageConfigTrigger', Date.now());
+                localStorage.removeItem('pageConfigTrigger');
+                // Broadcast to other tabs
+                const bc = new BroadcastChannel('pageConfigUpdate');
+                bc.postMessage({ type: 'update' });
+                bc.close();
+                window.dispatchEvent(new Event('pageConfigChanged'));
+            } catch (e) {
+                console.warn('Không lưu appPageConfig vào localStorage:', e);
+            }
+            renderPageConfig();
+
+            await savePostsToDataJson();
+            await loadPostsFromDataJson();
+
+            const msg = document.getElementById('pageConfigMsg');
+            msg.textContent = 'Đã lưu cấu hình page.';
+            msg.style.color = '#8affb5';
+            setTimeout(() => {
+                msg.textContent = '';
+                // Save scroll position and set auto-reload flag
+                localStorage.setItem('adminScrollY', window.scrollY);
+                sessionStorage.setItem('adminAutoReload', 'true');
+                window.location.reload();
+            }, 1000);
+
+            renderPageLinks();
+            renderDynamicMenu();
+            if (typeof loadDynamicContent === 'function') {
+                loadDynamicContent();
+            }
+            if (typeof initPagesList === 'function') {
+                initPagesList();
+            }
+        }
+
+        function syncPageConfigWithPosts() {
+            const pageConfig = getPageConfig();
+            const postCategories = getDistinctPostCategories();
+            const postSet = new Set(postCategories.map(c => c.toLowerCase()));
+            const synced = [];
+            const added = new Set();
+
+            // Keep only pageConfig entries that are present in posts (remove stale categories)
+            pageConfig.forEach(item => {
+                const cat = (item.category || item.label || '').toString().trim();
+                if (!cat) return;
+                if (postSet.has(cat.toLowerCase())) {
+                    synced.push({ order: synced.length + 1, label: cat, category: cat });
+                    added.add(cat.toLowerCase());
+                }
+            });
+
+            // If no existing pageConfig matched (e.g., initial empty state), populate from post categories
+            if (synced.length === 0 && postCategories.length > 0) {
+                postCategories.forEach(cat => {
+                    synced.push({ order: synced.length + 1, label: cat, category: cat });
+                    added.add(cat.toLowerCase());
+                });
+            } else {
+                // Add any post categories that are not already present
+                postCategories.forEach(cat => {
+                    const lower = cat.toLowerCase();
+                    if (!added.has(lower)) {
+                        synced.push({ order: synced.length + 1, label: cat, category: cat });
+                        added.add(lower);
+                    }
+                });
+            }
+
+            window.adminConfig.pageConfig = synced;
+            // Also update site-level settings so header/menu scripts pick up the change
+            try {
+                if (typeof window.adminSettings === 'object') {
+                    window.adminSettings.pageConfig = synced;
+                }
+            } catch (e) { }
+            localStorage.setItem('appPageConfig', JSON.stringify(synced));
+            saveAdminJson().catch(() => {
+                console.warn('Không lưu được pageConfig lên server');
+            });
+            try {
+                localStorage.setItem('appPageConfig', JSON.stringify(synced));
+                // Trigger storage event in same tab for mobile devices
+                localStorage.setItem('pageConfigTrigger', Date.now());
+                localStorage.removeItem('pageConfigTrigger');
+                // Broadcast to other tabs
+                const bc = new BroadcastChannel('pageConfigUpdate');
+                bc.postMessage({ type: 'update' });
+                bc.close();
+                window.dispatchEvent(new Event('pageConfigChanged'));
+            } catch (e) {
+                console.warn('Không lưu appPageConfig vào localStorage:', e);
+            }
+
+            renderPageConfig();
+            renderCategoryFilter();
+            renderCategorySelectOptions();
+            renderPageLinks();
+            renderDynamicMenu();
+            if (typeof loadDynamicContent === 'function') {
+                loadDynamicContent();
+            }
+            if (typeof initPagesList === 'function') {
+                initPagesList();
+            }
+        }
+
+        async function refreshPageConfig() {
+            const msg = document.getElementById('pageConfigMsg');
+            if (msg) {
+                msg.textContent = 'Đang làm mới danh sách chuyên mục...';
+                msg.style.color = '#fff';
+            }
+
+            try {
+                await loadAdminJson();
+                await loadPostsFromDataJson();
+                syncPageConfigWithPosts();
+                renderPageConfig();
+                renderCategoryFilter();
+                renderCategorySelectOptions();
+
+                if (msg) {
+                    msg.textContent = 'Đã làm mới page config từ admin.php.';
+                    msg.style.color = '#8affb5';
+                }
+            } catch (error) {
+                console.error('Lỗi khi làm mới page config:', error);
+                if (msg) {
+                    msg.textContent = 'Làm mới thất bại, kiểm tra nguồn dữ liệu bài viết.';
+                    msg.style.color = '#ff6b6b';
+                }
+            } finally {
+                if (msg) {
+                    setTimeout(() => {
+                        msg.textContent = '';
+                    }, 3000);
+                }
+            }
+        }
+
+        // Test helper: remove 'Thử nghiệm' from posts, refresh and report labels into #pageConfigMsg
+        async function testRefreshAndReport() {
+            try {
+                window.adminAuthenticated = true;
+                const main = document.getElementById('main-content-area'); if (main) main.style.display = 'block';
+                const auth = document.getElementById('admin-auth-area'); if (auth) auth.style.display = 'none';
+
+                if (Array.isArray(window.postsSheet)) {
+                    for (let i = 1; i < window.postsSheet.length; i++) {
+                        if ((window.postsSheet[i][6] || '').toString().trim().toLowerCase() === 'thử nghiệm') {
+                            window.postsSheet[i][6] = '';
+                        }
+                    }
+                }
+
+                if (typeof refreshPageConfig === 'function') {
+                    await refreshPageConfig();
+                }
+
+                await new Promise(r => setTimeout(r, 300));
+                const labels = Array.from(document.querySelectorAll('#pageConfigArea .page-config-row .page-name')).map(i => i.value.trim());
+                const msg = document.getElementById('pageConfigMsg');
+                if (msg) msg.textContent = 'TEST_LABELS:' + JSON.stringify(labels);
+                return labels;
+            } catch (e) {
+                console.error('testRefreshAndReport error', e);
+                const msg = document.getElementById('pageConfigMsg');
+                if (msg) msg.textContent = 'TEST_ERROR:' + (e && e.message ? e.message : String(e));
+                throw e;
+            }
+        }
+
+        function addPageConfigRow(entry = { order: '', label: '', category: '' }) {
+            const area = document.getElementById('pageConfigArea');
+            const row = document.createElement('div');
+            row.className = 'page-config-row';
+            row.draggable = true;
+            row.style = 'display:flex; gap: 6px; flex-wrap:wrap; margin-bottom:8px; align-items:center;';
+            const name = entry.label || entry.category || '';
+            row.innerHTML = `
+                <span class="drag-handle" style="cursor:grab; font-size:1.2em; padding:0 6px;">⋮⋮</span>
+                <input class="page-name" placeholder="Tên chuyên mục" value="${name}" style="flex:1; min-width:220px; padding:8px;" />
+                <button class="admin-btn small-btn" type="button" onclick="moveRowUp(this.parentNode)" style="font-size:0.8em; padding:4px 6px;">↑</button>
+                <button class="admin-btn small-btn" type="button" onclick="moveRowDown(this.parentNode)" style="font-size:0.8em; padding:4px 6px;">↓</button>
+                <button class="admin-btn small-btn" type="button" onclick="removePageConfigRow(this.parentNode)" style="font-size:0.8em; padding:4px 6px;">X</button>
+            `;
+            row.dataset.originalCategory = name;
+
+            row.addEventListener('dragstart', e => {
+                row.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', 'dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            row.addEventListener('dragend', () => {
+                row.classList.remove('dragging');
+                updatePageOrderInput();
+            });
+
+            row.addEventListener('dragover', e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(area, e.clientY);
+                const draggingRow = document.querySelector('.page-config-row.dragging');
+                if (!draggingRow) return;
+                if (!afterElement) {
+                    area.appendChild(draggingRow);
+                } else if (afterElement !== draggingRow) {
+                    area.insertBefore(draggingRow, afterElement);
+                }
+            });
+
+            row.addEventListener('drop', e => {
+                e.preventDefault();
+                updatePageOrderInput();
+            });
+
+            area.appendChild(row);
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.page-config-row:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function renderPageConfig() {
+            const area = document.getElementById('pageConfigArea');
+            area.innerHTML = '';
+
+            const data = getPageConfig();
+            data.forEach(entry => addPageConfigRow(entry));
+            updatePageOrderInput();
+
+            const autoSortCheckbox = document.getElementById('autoSortByName');
+            if (autoSortCheckbox) {
+                autoSortCheckbox.checked = getAutoSortByName();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadAdminConfig();
+            await initAdminAuth();
+            try {
+                await loadPostsFromDataJson(); // Load posts data
+                setInterval(() => {
+                    loadPostsFromDataJson();
+                }, 10000);
+            } catch (err) {
+                console.warn('Không thể load posts data:', err);
+                // Initialize with default header if load fails
+                postsSheet = [[
+                    'ID', 'Tên bài viết', 'Link img', '(alt) img', 'Trích dẫn <p>', 'Nội dung bài viết', 'Chuyên mục', 'Tag', 'Thời gian', 'Link page'
+                ]];
+                renderCategoryFilter();
+                renderPostsAdminTable();
+            }
+            await loadDropdownMenus();
+            if (window.adminAuthenticated) {
+                try {
+                    await loadContactEntries();
+                } catch (error) {
+                    console.warn('Không thể tải liên hệ tự động sau khi init:', error);
+                }
+            }
+            renderPageConfig();
+
+            document.addEventListener('keydown', (e) => {
+                const authArea = document.getElementById('admin-auth-area');
+                const mainArea = document.getElementById('main-content-area');
+                if (!authArea || authArea.style.display === 'none' || (mainArea && mainArea.style.display !== 'none')) return;
+
+                if (/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                    pressAdminKey(e.key);
+                } else if (e.key === 'Backspace') {
+                    e.preventDefault();
+                    const input = document.getElementById('adminPasswordInput');
+                    if (input) input.value = input.value.slice(0, -1);
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitAdminKey();
+                }
+            });
+        });
+
+        function execCmd(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('postContent').focus();
+        }
+
+        function insertPageBreak() {
+            const codeArea = document.getElementById('postContentCode');
+            if (codeArea.style.display !== 'none') {
+                // Ở chế độ code, insert trực tiếp vào textarea
+                const pos = codeArea.selectionStart;
+                const text = codeArea.value;
+                codeArea.value = text.slice(0, pos) + '<!--nextpage-->' + text.slice(pos);
+                codeArea.focus();
+                codeArea.setSelectionRange(pos + 14, pos + 14);
+            } else {
+                // Ở chế độ WYSIWYG, insert <p class="page-marker">--nextpage--</p>
+                const editor = document.getElementById('postContent');
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const p = document.createElement('p');
+                    p.className = 'page-marker';
+                    p.textContent = '--nextpage--';
+                    range.deleteContents();
+                    range.insertNode(p);
+                    // Move cursor after
+                    range.setStartAfter(p);
+                    range.setEndAfter(p);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+                editor.focus();
+            }
+        }
+
+        function toggleCodeView() {
+            var editor = document.getElementById('postContent');
+            var codeArea = document.getElementById('postContentCode');
+            var toolbar = document.getElementById('editorToolbar');
+            if (codeArea.style.display === 'none') {
+                // Switch to code view
+                codeArea.value = editor.innerHTML;
+                editor.style.display = 'none';
+                codeArea.style.display = 'block';
+                toolbar.style.display = 'none';
+                // Add visual button
+                if (!document.getElementById('visualBtn')) {
+                    codeArea.insertAdjacentHTML('beforebegin', '<button id="visualBtn" onclick="toggleCodeView()" class="admin-btn small-btn" title="Switch to Visual Editor" style="margin-bottom: 8px;">Visual</button>');
+                }
+                codeArea.focus();
+            } else {
+                // Switch to WYSIWYG view
+                editor.innerHTML = codeArea.value;
+                codeArea.style.display = 'none';
+                editor.style.display = 'block';
+                toolbar.style.display = 'flex';
+                // Remove visual button
+                var visualBtn = document.getElementById('visualBtn');
+                if (visualBtn) visualBtn.remove();
+                editor.focus();
+            }
+        }
+
+        // === DROPDOWN MENUS MANAGEMENT ===
+        let currentDropdownMenus = [];
+
+        async function loadDropdownMenus() {
+            const msg = document.getElementById('dropdownMsg');
+            msg.textContent = 'Đang tải...';
+            try {
+                const res = await fetch(ADMIN_CONFIG_PATH + '?action=public_config&v=' + Date.now(), { cache: 'no-store' });
+                if (!res.ok) throw new Error('Không đọc được admin.php');
+                const text = await res.text();
+                const data = parseAdminPhpResponse(text);
+                currentDropdownMenus = Array.isArray(data.dropdownMenus) ? data.dropdownMenus : [];
+                renderDropdownMenusUI();
+                msg.textContent = 'Done.';
+                msg.style.color = '#8affb5';
+            } catch (error) {
+                msg.textContent = 'Lỗi tải: ' + error.message;
+                msg.style.color = '#ff6e6e';
+            }
+            setTimeout(() => msg.textContent = '', 3000);
+        }
+
+        function renderDropdownMenusUI() {
+            const container = document.getElementById('dropdownMenusContainer');
+            if (!container) return;
+
+            let html = '';
+            currentDropdownMenus.forEach((menu, menuIndex) => {
+                html += `
+                    <div class="menu-item dropdown-admin-card">
+                        <div class="menu-item-row depth-1" style="margin-bottom:12px;">
+                            <button class="admin-btn small-btn" onclick="moveDropdownMenuUp(${menuIndex})" title="Lên">↑</button>
+                            <button class="admin-btn small-btn" onclick="moveDropdownMenuDown(${menuIndex})" title="Xuống">↓</button>
+                            <input class="item-href" type="text" placeholder="Nhãn hiển thị" value="${menu.label || ''}" onchange="updateMenuLabel(${menuIndex}, this.value)" />
+                            <input class="item-label" type="text" placeholder="Tên menu" value="${menu.name || ''}" onchange="updateMenuName(${menuIndex}, this.value)" />
+                            <button class="admin-btn small-btn" onclick="addMenuItem(${menuIndex})">+</button>
+                            <button class="admin-btn small-btn admin-delete-btn" onclick="deleteMenu(${menuIndex})">Xóa Menu</button>
+                        </div>
+                        <div class="menu-items" id="menu-items-${menuIndex}">
+                            ${renderMenuItemsUI(menu.items || [], menuIndex, '')}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function getMenuPathTarget(menuIndex, itemPath) {
+            const menu = currentDropdownMenus[menuIndex];
+            if (!menu) return null;
+            const path = itemPath === '' ? [] : itemPath.split('.').map(Number);
+            let current = menu;
+            let parent = null;
+            let container = menu.items || [];
+            let index = null;
+            for (let i = 0; i < path.length; i++) {
+                index = path[i];
+                if (!Array.isArray(container) || container[index] === undefined) return null;
+                parent = current;
+                current = container[index];
+                if (i === path.length - 1) {
+                    return { menu, parent, item: current, container, index };
+                }
+                container = Array.isArray(current.submenu) ? current.submenu : Array.isArray(current.items) ? current.items : [];
+            }
+            return { menu, parent, item: current, container, index };
+        }
+
+        function moveDropdownMenuUp(menuIndex) {
+            if (menuIndex <= 0 || menuIndex >= currentDropdownMenus.length) return;
+            [currentDropdownMenus[menuIndex - 1], currentDropdownMenus[menuIndex]] = [currentDropdownMenus[menuIndex], currentDropdownMenus[menuIndex - 1]];
+            renderDropdownMenusUI();
+        }
+
+        function moveDropdownMenuDown(menuIndex) {
+            if (menuIndex < 0 || menuIndex >= currentDropdownMenus.length - 1) return;
+            [currentDropdownMenus[menuIndex], currentDropdownMenus[menuIndex + 1]] = [currentDropdownMenus[menuIndex + 1], currentDropdownMenus[menuIndex]];
+            renderDropdownMenusUI();
+        }
+
+        function renderMenuItemsUI(items, menuIndex, parentPath) {
+            const depth = parentPath === '' ? 1 : parentPath.split('.').length + 1;
+            return items.map((item, itemIndex) => {
+                const itemPath = parentPath ? `${parentPath}.${itemIndex}` : `${itemIndex}`;
+                const canAddSubmenu = depth < 2;
+                let html = `
+                    <div class="menu-item-row depth-${depth}">
+                        <button class="admin-btn small-btn" onclick="moveMenuItemUp(${menuIndex}, '${itemPath}')" title="Lên">↑</button>
+                        <button class="admin-btn small-btn" onclick="moveMenuItemDown(${menuIndex}, '${itemPath}')" title="Xuống">↓</button>
+                        <input class="item-href" type="text" placeholder="Nhãn" value="${item.label || ''}" onchange="updateMenuItem(${menuIndex}, '${itemPath}', 'label', this.value)" />
+                        <input class="item-label" type="text" placeholder="Href (để # hoặc trống nếu chỉ là menu cha)" value="${item.href || ''}" onchange="updateMenuItem(${menuIndex}, '${itemPath}', 'href', this.value)" />
+                        ${canAddSubmenu ? `<button class="admin-btn small-btn" onclick="addSubMenuItem(${menuIndex}, '${itemPath}')">+</button>` : ''}
+                        <button class="admin-btn small-btn admin-delete-btn" onclick="deleteMenuItem(${menuIndex}, '${itemPath}')">Xóa</button>
+                    </div>
+                `;
+                if (canAddSubmenu && item.submenu && Array.isArray(item.submenu)) {
+                    html += `<div class="submenu-container">${renderMenuItemsUI(item.submenu, menuIndex, itemPath)}</div>`;
+                } else if (!canAddSubmenu && item.submenu && Array.isArray(item.submenu)) {
+                    html += `<div class="submenu-container">${renderMenuItemsUI(item.submenu, menuIndex, itemPath)}</div>`;
+                }
+                return html;
+            }).join('');
+        }
+
+        function addNewMenu() {
+            currentDropdownMenus.push({ name: '', label: '', items: [] });
+            renderDropdownMenusUI();
+        }
+
+        function deleteMenu(menuIndex) {
+            if (confirm('Xóa menu này?')) {
+                currentDropdownMenus.splice(menuIndex, 1);
+                renderDropdownMenusUI();
+            }
+        }
+
+        function updateMenuName(menuIndex, value) {
+            currentDropdownMenus[menuIndex].name = value;
+        }
+
+        function updateMenuLabel(menuIndex, value) {
+            currentDropdownMenus[menuIndex].label = value;
+        }
+
+        function addMenuItem(menuIndex) {
+            if (!Array.isArray(currentDropdownMenus[menuIndex].items)) {
+                currentDropdownMenus[menuIndex].items = [];
+            }
+            currentDropdownMenus[menuIndex].items.push({ label: '', href: '' });
+            renderDropdownMenusUI();
+        }
+
+        function addSubMenuItem(menuIndex, itemPath) {
+            const target = getMenuPathTarget(menuIndex, itemPath);
+            if (!target || !target.item) return;
+            if (!Array.isArray(target.item.submenu)) {
+                target.item.submenu = [];
+            }
+            target.item.submenu.push({ label: '', href: '' });
+            renderDropdownMenusUI();
+        }
+
+        function updateMenuItem(menuIndex, itemPath, field, value) {
+            const target = getMenuPathTarget(menuIndex, itemPath);
+            if (!target || !target.item) return;
+            target.item[field] = value;
+        }
+
+        function moveMenuItemUp(menuIndex, itemPath) {
+            const target = getMenuPathTarget(menuIndex, itemPath);
+            if (!target || !Array.isArray(target.container) || target.index === null || target.index <= 0) return;
+            const list = target.container;
+            const index = target.index;
+            [list[index - 1], list[index]] = [list[index], list[index - 1]];
+            renderDropdownMenusUI();
+        }
+
+        function moveMenuItemDown(menuIndex, itemPath) {
+            const target = getMenuPathTarget(menuIndex, itemPath);
+            if (!target || !Array.isArray(target.container) || target.index === null || target.index >= target.container.length - 1) return;
+            const list = target.container;
+            const index = target.index;
+            [list[index], list[index + 1]] = [list[index + 1], list[index]];
+            renderDropdownMenusUI();
+        }
+
+        function deleteMenuItem(menuIndex, itemPath) {
+            if (!confirm('Xóa item này?')) return;
+            const target = getMenuPathTarget(menuIndex, itemPath);
+            if (!target || !Array.isArray(target.container) || target.index === null) return;
+
+            // Xóa item khỏi container
+            target.container.splice(target.index, 1);
+
+            // Nếu container (submenu) trở thành rỗng, xóa property "submenu" từ parent item
+            if (target.container.length === 0 && target.parent && Array.isArray(target.parent.submenu)) {
+                delete target.parent.submenu;
+            }
+
+            renderDropdownMenusUI();
+        }
+
+        async function saveDropdownMenus() {
+            const msg = document.getElementById('dropdownMsg');
+            msg.textContent = 'Đang lưu...';
+            try {
+                const res = await fetch(ADMIN_CONFIG_PATH, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dropdownMenus: currentDropdownMenus })
+                });
+                if (!res.ok) throw new Error('Lỗi lưu');
+                const result = await res.json();
+                if (result.status === 'success') {
+                    msg.textContent = 'Đã lưu thành công.';
+                    msg.style.color = '#8affb5';
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    throw new Error(result.message || 'Lỗi không xác định');
+                }
+            } catch (error) {
+                msg.textContent = 'Lỗi lưu: ' + error.message;
+                msg.style.color = '#ff6e6e';
+            }
+            setTimeout(() => msg.textContent = '', 3000);
+        }
+
+        function initAdminSectionToggles() {
+            const cards = document.querySelectorAll('.card, .dropdown-admin-card');
+            cards.forEach(card => {
+                const header = card.querySelector('h2');
+                if (!header) return;
+                if (header.parentElement?.classList.contains('section-header')) return;
+
+                const toggleBtn = document.createElement('button');
+                toggleBtn.type = 'button';
+                toggleBtn.className = 'section-toggle';
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                toggleBtn.innerHTML = '▸';
+
+                const headerWrapper = document.createElement('div');
+                headerWrapper.className = 'section-header';
+                header.replaceWith(headerWrapper);
+                headerWrapper.appendChild(header);
+                headerWrapper.appendChild(toggleBtn);
+
+                const sectionBody = document.createElement('div');
+                sectionBody.className = 'section-body collapsed';
+
+                let sibling = headerWrapper.nextSibling;
+                while (sibling) {
+                    const nextSibling = sibling.nextSibling;
+                    sectionBody.appendChild(sibling);
+                    sibling = nextSibling;
+                }
+
+                card.appendChild(sectionBody);
+
+                toggleBtn.addEventListener('click', () => {
+                    const isCollapsed = sectionBody.classList.toggle('collapsed');
+                    toggleBtn.classList.toggle('open', !isCollapsed);
+                    toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+                    toggleBtn.innerHTML = isCollapsed ? '▸' : '▾';
+
+                    cards.forEach(otherCard => {
+                        if (otherCard === card) return;
+                        const otherBody = otherCard.querySelector('.section-body');
+                        const otherToggle = otherCard.querySelector('.section-toggle');
+                        if (otherBody && otherToggle) {
+                            otherBody.classList.add('collapsed');
+                            otherToggle.classList.remove('open');
+                            otherToggle.setAttribute('aria-expanded', 'false');
+                            otherToggle.innerHTML = '▸';
+                        }
+                    });
+                });
+            });
+        }
+
+        initAdminSectionToggles();
+
+        // === END DROPDOWN MENUS MANAGEMENT ===
+
+    </script>
+
+    <script>
+
+    const baseTag = document.querySelector('base[href]');
+    const appBasePath = baseTag 
+        ? new URL(baseTag.getAttribute('href'), window.location.href).pathname 
+        : (window.location.pathname.includes('/pages/') 
+            ? window.location.pathname.substring(0, window.location.pathname.indexOf('/pages/') + 1) 
+            : '/');
+    const normalizedBasePath = appBasePath.endsWith('/') ? appBasePath : `${appBasePath}/`;   
+
+    const s = document.createElement('script');
+    s.src = normalizedBasePath + 'assets/js/main-scripts.js?v=' + Date.now();
+    document.write(s.outerHTML);
+    
+     //   const baseTag = document.querySelector('base[href]');
+     //   const appBasePath = baseTag
+      //      ? new URL(baseTag.getAttribute('href'), window.location.href).pathname
+      //      : '/';
+      //  const normalizedBasePath = appBasePath.endsWith('/') ? appBasePath : `${appBasePath}/`;
+      //  var s = document.createElement('script');
+    //    s.src = normalizedBasePath + 'assets/js/main-scripts.js?v=' + Date.now();
+      //  document.write(s.outerHTML);
+    </script>
+</body>
+
+</html>

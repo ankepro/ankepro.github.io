@@ -1,0 +1,567 @@
+.china-study-container {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.flash-card {
+    width: 100%;
+    max-width: 600px;
+    background: var(--panel);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 0px 0px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.data-row {
+    margin: 15px 0;
+    padding: 18px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    min-height: 96px;
+    height: 96px;
+    display: grid;
+    gap: 10px;
+    align-items: start;
+    overflow: hidden;
+}
+
+.label-type {
+    color: var(--secondary);
+    font-size: 0.75em;
+    text-transform: uppercase;
+    margin-bottom: 0px;
+    display: block;
+}
+
+.content-text {
+    font-size: 1.3em;
+    line-height: 1.5;
+    height: 2.6em;
+    display: block;
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+.is-hidden {
+    filter: blur(12px);
+    opacity: 0.1;
+    user-select: none;
+}
+
+.is-visible {
+    filter: blur(0);
+    opacity: 1;
+    color: #fff;
+}
+
+.study-main {
+    font-size: 2.2em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-shadow: 0 0 10px var(--accent);
+}
+
+.ai-voice-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Căn giữa theo chiều ngang trong Flexbox */
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.study-buttons {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#voice-result {
+    margin-top: 0px;
+    font-weight: bold;
+    min-height: 14px;
+    width: 100%;
+}
+
+/* Màu sắc và biến */
+.primary-color {
+    color: var(--primary);
+}
+
+/* Container chính cho phần voice check */
+.voice-check-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.btn-transparent {
+    background: transparent;
+    cursor: pointer;
+    /* Có thể thêm border hoặc padding nếu cần */
+}
+
+/* Kết quả giọng nói */
+#voice-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+/* Container tra cứu Hanzii */
+.hidden-container {
+    margin-top: 0px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Button Hanzii tùy chỉnh */
+.btn-hanzii {
+    padding: 5px 15px;
+    font-size: 0.8em;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-hanzii:hover {
+    background: var(--accent);
+    color: white;
+}
+
+/* Đảm bảo các hàng dữ liệu có con trỏ chuột khi hover */
+.data-row {
+    cursor: pointer;
+}
+
+/* --- FLASH CARD TIẾNG TRUNG --- */
+.study-buttons {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.study-buttons button {
+    background: transparent;
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
+    padding: 12px 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 0 10px var(--secondary);
+    font-family: inherit;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: clamp(0.7rem, 2vw, 0.95rem);
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.study-buttons button:hover {
+    background: var(--secondary);
+    color: var(--dark);
+    box-shadow: 0 0 25px var(--secondary);
+    transform: translateY(-3px);
+}
+
+/* Nút chính chiếm 2 cột */
+.btn-full {
+    grid-column: span 2;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 0 10px var(--primary) !important;
+}
+
+.btn-full:hover {
+    background: var(--primary) !important;
+    color: white !important;
+    box-shadow: 0 0 25px var(--primary) !important;
+}
+
+/* Nút phát âm màu Accent */
+#btn-speak {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+#btn-speak:hover {
+    background: var(--accent);
+    color: var(--dark);
+    box-shadow: 0 0 25px var(--accent);
+}
+
+/* Nút kiểm tra phát âm */
+#btn-check-voice {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+}
+
+#btn-check-voice:hover {
+    background: var(--primary);
+    color: var(--dark);
+    box-shadow: 0 0 25px var(--primary);
+}
+
+/* Nút quarter */
+.btn-quarter {
+    border-color: var(--secondary);
+    color: var(--secondary);
+    box-shadow: 0 0 10px var(--secondary);
+}
+
+.btn-quarter:hover {
+    background: var(--secondary);
+    color: var(--dark);
+    box-shadow: 0 0 25px var(--secondary);
+}
+
+.china-study-container {
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.flash-card {
+    width: 100%;
+    max-width: 650px;
+    background: var(--panel);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+/*-- Nút chỉnh tốc độ --*/
+/* Container tổng */
+.speed-control-container {
+    width: 100%;
+    max-width: 650px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Tùy chỉnh thanh trượt chính */
+#speedRange {
+    -webkit-appearance: none;
+    /* Xóa giao diện mặc định */
+    -moz-appearance: none;
+    /* Cho Firefox cũ */
+    appearance: none;
+    /* Chuẩn chung hiện nay */
+    width: 100%;
+    height: 8px;
+    background: #1a052d;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid var(--secondary);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+/* Nút kéo (Thumb) cho Chrome, Safari, Edge */
+#speedRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--secondary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--secondary), 0 0 5px #fff;
+    transition: 0.3s;
+}
+
+#speedRange::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 25px var(--secondary), 0 0 10px #fff;
+}
+
+/* Nút kéo cho Firefox */
+#speedRange::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--secondary);
+    transition: 0.3s;
+}
+
+/* Audio status */
+.audio-status {
+    font-size: 14px;
+    color: var(--accent);
+    margin: 0px 0px;
+    min-height: 20px;
+    text-align: center;
+}
+
+/* Số hiển thị tốc độ */
+#speedValue {
+    min-width: 40px;
+    font-weight: bold;
+    color: var(--secondary);
+    text-shadow: 0 0 10px var(--secondary);
+    font-family: monospace;
+    font-size: 1.2em;
+}
+
+/* Media query cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .study-buttons {
+        gap: 5px;
+        width: 100%;
+    }
+
+    .study-buttons button {
+        padding: 10px 8px;
+        letter-spacing: 0.5px;
+    }
+}
+
+
+
+/* NÚT MỞ BẢNG VẼ */
+#draw-toggle.fab-btn {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: var(--dark) !important;
+    border: 2px solid var(--primary) !important;
+    color: var(--primary) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 5px !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    z-index: 1999 !important;
+    box-shadow: 0 0 10px var(--primary) !important;
+    transition: 0.3s !important;
+}
+
+#draw-toggle.fab-btn:hover {
+    background: var(--primary) !important;
+    color: var(--dark) !important;
+    box-shadow: 0 0 20px var(--primary) !important;
+}
+
+/* CONTAINER BẢNG VẼ */
+#draw-popup.draw-container {
+    position: fixed !important;
+    bottom: 75px !important;
+    left: 20px !important;
+    width: min(400px, calc(100vw - 40px)) !important;
+    background: #0f081a !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 30px rgba(255, 100, 190, 0.22), 0 10px 40px rgba(0, 0, 0, 0.24) !important;
+    z-index: 1998 !important;
+    border: 1px solid rgba(255, 100, 190, 0.45);
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden;
+    /* Đảm bảo không bị tràn */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), border-color 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+
+/* KHUNG CHỨA CANVAS (KHUNG ĐỎ) */
+.canvas-wrapper {
+    position: relative;
+    width: 100%;
+    /* Bỏ background ở đây để nó không tràn xuống dưới */
+    background-color: #f5f1e8;
+    display: block;
+}
+
+/* Vẽ đường ngang giữa ô chữ mễ */
+.canvas-wrapper::before {
+    content: "";
+    display: none;
+}
+
+/* Vẽ đường dọc giữa ô chữ mễ */
+.canvas-wrapper::after {
+    content: "";
+    display: none;
+}
+
+/* Ô VẼ HÌNH VUÔNG VÀ LƯỚI CHỮ MỄ (NẰM TRONG KHUNG ĐỎ) */
+#writeCanvas {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Ép buộc luôn là hình vuông hoàn hảo */
+    display: block;
+    cursor: crosshair;
+    touch-action: none;
+    position: relative;
+
+    /* ĐƯA LƯỚI VÀO ĐÂY: Chỉ xuất hiện trong ô vuông vẽ */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="100" y1="0" x2="0" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="50" y1="0" x2="50" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="0" y1="50" x2="100" y2="50" stroke="%23d8cfc0" stroke-width="0.8"/></svg>');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#writeCanvas:hover {
+    cursor: url('../others/cursor/bluetriangle_1.cur'), auto;
+}
+
+#draw-popup.is-hidden {
+    display: block !important;
+    opacity: 0 !important;
+    transform: translateY(16px) scale(0.96) !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+#draw-popup.draw-container.is-hidden {
+    border-color: rgba(255, 100, 190, 0.15) !important;
+    box-shadow: 0 0 8px rgba(255, 100, 190, 0.08) !important;
+}
+
+/* NÚT CHỨC NĂNG SIÊU NHỎ */
+.btn-draw {
+    position: absolute;
+    z-index: 6;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 100, 190, 0.7);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255, 100, 190, 0.12);
+    color: #d60c7b;
+    pointer-events: auto;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-draw:hover {
+    background: rgba(255, 100, 190, 0.18);
+    box-shadow: 0 0 14px rgba(255, 100, 190, 0.24);
+    transform: scale(1.05);
+}
+
+.btn-undo {
+    bottom: 30px;
+    left: 5px;
+}
+
+.btn-clear {
+    top: 5px;
+    right: 5px;
+}
+
+/* KẾT QUẢ NHẬN DẠNG (KHUNG XANH) */
+#recognition-box {
+    width: 100%;
+    min-height: 40px;
+    /* Tăng nhẹ chiều cao cho dễ nhìn */
+    background: #ffffff;
+    /* Màu nền trắng sạch sẽ, không có lưới */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    padding: 6px 8px;
+    border-top: 1px solid #e0d8cc;
+    /* Đường kẻ ngăn cách với ô vẽ */
+    flex-wrap: wrap;
+}
+
+.char-candidate-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255, 71, 87, 0.08);
+}
+
+.char-candidate {
+    font-size: 16px;
+    /* Chữ hơi lớn để dễ nhìn */
+    color: #ff4757;
+    font-weight: bold;
+    user-select: text;
+}
+
+.char-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 71, 87, 0.12);
+    color: #ff4757;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.char-copy-btn:hover {
+    background: rgba(255, 71, 87, 0.22);
+}
+
+.is-hidden {
+    display: none !important;
+}

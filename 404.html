@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - LỖI HỆ THỐNG - AN TIẾN PRO</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--dark);
+            overflow: hidden;
+            padding-top: 0;
+            /* Ghi đè padding của body chính */
+        }
+
+        .error-wrapper {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hiệu ứng Glitch cho số 404 */
+        .glitch {
+            font-size: 12rem;
+            font-weight: 900;
+            position: relative;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            animation: voltage 0.5s infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: '404';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            color: var(--secondary);
+            z-index: -1;
+            animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+
+        .glitch::after {
+            color: var(--primary);
+            z-index: -2;
+            animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-5px, 5px);
+            }
+
+            40% {
+                transform: translate(-5px, -5px);
+            }
+
+            60% {
+                transform: translate(5px, 5px);
+            }
+
+            80% {
+                transform: translate(5px, -5px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .error-msg {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary);
+            margin-bottom: 30px;
+        }
+
+        .back-home {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 2px solid var(--primary);
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            box-shadow: 0 0 15px var(--primary);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .back-home:hover {
+            background: var(--primary);
+            box-shadow: 0 0 30px var(--primary), 0 0 50px var(--secondary);
+            transform: scale(1.1);
+        }
+
+        /* Scanline effect cho giống màn hình lỗi */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scanlines"></div>
+
+    <div class="error-wrapper">
+        <div class="glitch">404</div>
+        <div class="error-msg">Hệ thống bị xâm nhập - Không tìm thấy trang</div>
+        <p style="margin-bottom: 30px; color: #888;">Có vẻ như dữ liệu đã bị xóa hoặc đường dẫn bị hỏng.</p>
+        <a href="/index.html" class="back-home">Trở về trang chủ</a>
+    </div>
+</body>
+
+</html>

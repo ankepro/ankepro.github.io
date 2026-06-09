@@ -1,0 +1,12 @@
+{
+    "id": "test01",
+    "title": "Thử nghiệm phóng to ảnh",
+    "img": "\/assets\/img\/main-thuychi.jpg",
+    "imgAlt": "Thử nghiệm phóng to ảnh",
+    "excerpt": "Thử nghiệm phóng to ảnh với hiệu ứng kính lúp zoom x3",
+    "content": "<img class=\"magnify-target\" src=\"\/assets\/img\/main-thuychi.jpg\" alt=\"Ảnh\">\n<button id=\"dragBtn\" class=\"floating-btn\" style=\"right: 0px; top: 50%; transform: translateY(-50%);\">BẬT<br>🔎<\/button>\n<!--\n<img class=\"magnify-target\" src=\"\/assets\/img\/main-thuychi.jpg\" alt=\"Ảnh\">\n<button id=\"dragBtn\" class=\"floating-btn\" style=\"right: 0px; top: 50%; transform: translateY(-50%);\">BẬT<br>🔎<\/button>\n-->",
+    "category": "Thử nghiệm",
+    "tag": "",
+    "time": "46159.56041666667",
+    "linkPage": ""
+}

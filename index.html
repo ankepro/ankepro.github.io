@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="vi">
+
+
+<head>
+  <base href="/" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <title>An Tiến pro</title>
+  <meta name="description" content="Trang web chia sẻ của An Tiến" />
+  <meta property="og:title" content="An Tiến pro" />
+  <meta property="og:site_name" content="An Tiến pro" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="Trang web chia sẻ của An Tiến" />  
+  <meta property="og:image" content="https://antien.gt.tc/assets/img/main-fav.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/jpeg" /> <link rel="image_src" href="https://antien.gt.tc/assets/img/main-fav.png" />
+
+</head>
+<div id="head-placeholder"></div>
+
+<body>
+  <div id="header-placeholder"></div>
+    
+
+  <div class="gallery-container" id="gallery"></div>
+
+  <main class="container">
+    <section id="home-page">
+      <div id="main-content-area">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 85%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 50%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+        </div>
+      </div>
+      <div class="pagination"></div>
+    </section>
+
+    <section id="category-page" style="display:none;">
+      <div class="h0" id="category-title" style="text-align:center; margin-bottom:30px; width:100%;"></div>
+      <div class="main-content" id="category-content">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 85%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 60%;"></div>
+        </div>
+      </div>
+      <div class="pagination"></div>
+    </section>
+
+    <section id="search-page" style="display:none;">
+      <h2 class="h0" style="text-align:center; margin-bottom:40px; text-transform: uppercase;">KẾT QUẢ TÌM KIẾM</h2>
+      <div id="search-results" class="main-content">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 85%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 60%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tag-page" style="display:none;">
+      <h2 class="h0" id="tag-title" style="text-align:center; margin-bottom:40px; text-transform: uppercase;"></h2>
+      <div id="tag-content-area" class="main-content">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 85%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text" style="width: 60%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="post-page" style="display:none;">
+      <article class="post-article" id="post-content-detail">
+        <div class="skeleton-title" style="width: 80%; height: 35px; margin-bottom: 15px;"></div>
+        <div class="skeleton-text" style="width: 25%; height: 14px; margin-bottom: 40px;"></div>
+        <div class="skeleton-text" style="margin-bottom: 12px; height: 16px;"></div>
+        <div class="skeleton-text" style="margin-bottom: 12px; height: 16px; width: 95%;"></div>
+        <div class="skeleton-text" style="margin-bottom: 12px; height: 16px; width: 90%;"></div>
+        <div class="skeleton-text" style="margin-bottom: 30px; height: 16px; width: 40%;"></div>
+      </article>
+      <div id="post-pagination" class="pagination" style="text-align:center; margin-top:20px;"></div>
+      <section id="comment-section" class="comment-panel" style="display:none; margin-top:24px;">
+        <div class="comment-form-card">
+          <form id="commentForm" class="comment-form" onsubmit="return false;">
+            <div class="comment-form-header"
+              style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <span class="comment-label-type" style="color: var(--primary); margin:0;">BÌNH LUẬN</span>
+              <button type="submit" class="comment-submit-button comment-submit-small">GỬI</button>
+            </div>
+            <div class="comment-input-row">
+              <input type="text" name="commentName" class="comment-input-style" placeholder="Nhập họ tên của bạn"
+                required />
+            </div>
+            <div class="comment-input-row">
+              <textarea name="commentContent" class="comment-input-style" rows="3" placeholder="Viết bình luận của bạn"
+                required style="resize: vertical; max-height: 900px; min-height: 60px;"></textarea>
+            </div>
+            <input type="hidden" name="replyToName" />
+            <div id="comment-reply-hint" class="comment-reply-hint"></div>
+          </form>
+          <div id="comment-status" class="comment-status"></div>
+          <div class="comment-note" id="comment-note"></div>
+          <div id="comment-list" class="comment-list"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="contact-page" style="display:none;">
+      <div class="contact-container">
+        <div class="contact-card">
+          <span class="label-type" style="color: var(--primary); text-align: center">LIÊN HỆ</span>
+          <div class="contact-main-title">GỬI TIN NHẮN</div>
+          <form id="contactForm" method="post" onsubmit="return false;">
+            <div class="input-row">
+              <span class="label-type">Danh tính</span>
+              <input type="text" name="entry.544024106" class="input-style" placeholder="Viết tên vào đây..."
+                required />
+            </div>
+            <div class="input-row">
+              <span class="label-type">Nội dung tin nhắn</span>
+              <textarea name="entry.1071615712" class="input-style" rows="4" placeholder="Viết tin nhắn vào đây..."
+                required style="resize: none"></textarea>
+            </div>
+            <div class="btn-wrapper">
+              <button type="submit" class="btn-cyber">BẮN TÍN HIỆU</button>
+            </div>
+          </form>
+          <div id="status-msg"></div>
+        </div>
+        <img style="filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.9)); width:50%; max-width:300px;"
+          src="assets/img/zaloqr.png" alt="Zalo QR Code">
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script>
+    const baseTag = document.querySelector('base[href]');
+    const appBasePath = baseTag ? new URL(baseTag.getAttribute('href'), window.location.href).pathname : '/';
+    const normalizedBasePath = appBasePath.endsWith('/') ? appBasePath : `${appBasePath}/`;
+    const s = document.createElement('script');
+    s.src = normalizedBasePath + 'assets/js/main-scripts.js?v=' + Date.now();
+    document.write(s.outerHTML);
+  </script>
+
+   
+</body>
+
+</html>

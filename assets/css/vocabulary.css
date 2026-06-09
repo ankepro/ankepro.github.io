@@ -1,0 +1,423 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.box-admin {
+  max-width: 1000px;
+  margin: 0px auto;
+  background: rgba(13, 1, 30, 0.9);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+  position: relative;
+  z-index: 10;
+}
+
+/* --- FORM NHẬP LIỆU: MỖI CÁI 1 HÀNG, CUỐI CHIA ĐÔI --- */
+.form-cyber {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.input-full {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row-last {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-cyber input {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--secondary);
+  color: #fff;
+  padding: 5px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+}
+
+.btn-save-cyber {
+  flex: 1;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: 0.3s;
+  padding: 5px;
+}
+
+.btn-save-cyber:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-cancel-cyber {
+  flex: 1;
+  background: transparent;
+  color: #ff8c00;
+  border: 2px solid #ff8c00;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: 0.3s;
+  padding: 5px;
+}
+
+.btn-cancel-cyber:hover {
+  background: #ff8c00;
+  color: #fff;
+}
+
+/* --- BẢNG DỮ LIỆU: XUỐNG DÒNG, KHÔNG CUỘN NGANG --- */
+.table-area {
+  width: 100%;
+  max-height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #1a0233;
+  color: var(--secondary);
+  padding: 10px 5px;
+  text-align: left;
+  font-size: 11px;
+}
+
+/* Tỉ lệ cột để vừa màn hình điện thoại */
+th:nth-child(1) {
+  width: 25%;
+}
+
+/* Hán tự */
+th:nth-child(2) {
+  width: 25%;
+}
+
+/* Pinyin */
+th:nth-child(3) {
+  width: 25%;
+}
+
+/* Nghĩa (Xuống dòng) */
+th:nth-child(4) {
+  width: 25%;
+}
+
+/* Lệnh */
+
+td {
+  padding: 5px 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+  font-size: 13px;
+  white-space: normal;
+  /* Cho phép xuống dòng */
+  overflow-wrap: break-word;
+  /* Bẻ từ dài */
+}
+
+.hanzi-col {
+  font-family: "PingFang SC", sans-serif;
+  color: #fff;
+  font-weight: bold;
+}
+
+.action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.btn-vocab-edit,
+.btn-vocab-delete {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  min-width: 54px;
+}
+
+.btn-vocab-edit {
+  background: rgba(56, 137, 255, 0.14);
+  border-color: #3890ff;
+  color: #c9e4ff;
+}
+
+.btn-vocab-delete {
+  background: rgba(255, 87, 87, 0.16);
+  border-color: #ff5d5d;
+  color: #ffd3d3;
+}
+
+.btn-vocab-edit:hover,
+.btn-vocab-delete:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+}
+
+@media (max-width: 600px) {
+  .box-admin {
+    padding: 10px;
+    margin: 5px;
+  }
+
+  td {
+    font-size: 12px;
+  }
+
+  .btn-vocab-edit,
+  .btn-vocab-delete {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
+
+#status-msg {
+  height: 8px;
+  color: var(--accent);
+  font-size: 8px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.find-vocabulary {
+  width: 100%;
+  margin-bottom: 0px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--primary);
+  color: white;
+  padding: 5px;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.direct-link {
+  color: yellow;
+  text-decoration: none;
+}
+
+.direct-link:hover {
+  color: #ffdd44;
+}
+
+/* NÚT MỞ BẢNG VẼ */
+#draw-toggle.fab-btn {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: var(--dark) !important;
+  border: 2px solid var(--primary) !important;
+  color: var(--primary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 5px !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+  z-index: 2100 !important;
+  box-shadow: 0 0 10px var(--primary) !important;
+  transition: 0.3s !important;
+}
+
+#draw-toggle.fab-btn:hover {
+  background: var(--primary) !important;
+  color: var(--dark) !important;
+  box-shadow: 0 0 20px var(--primary) !important;
+}
+
+/* CONTAINER BẢNG VẼ */
+#draw-popup.draw-container {
+  position: fixed !important;
+  bottom: 75px !important;
+  left: 20px !important;
+  width: min(400px, calc(100vw - 40px)) !important;
+  background: #0f081a !important;
+  border-radius: 14px !important;
+  box-shadow: 0 0 30px rgba(255, 100, 190, 0.22), 0 10px 40px rgba(0, 0, 0, 0.24) !important;
+  z-index: 2000 !important;
+  border: 1px solid rgba(255, 100, 190, 0.45);
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden;
+  /* Đảm bảo không bị tràn */
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), border-color 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+
+/* KHUNG CHỨA CANVAS (KHUNG ĐỎ) */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  /* Bỏ background ở đây để nó không tràn xuống dưới */
+  background-color: #f5f1e8;
+  display: block;
+}
+
+/* Vẽ đường ngang giữa ô chữ mễ */
+.canvas-wrapper::before {
+  content: "";
+  display: none;
+}
+
+/* Vẽ đường dọc giữa ô chữ mễ */
+.canvas-wrapper::after {
+  content: "";
+  display: none;
+}
+
+/* Ô VẼ HÌNH VUÔNG VÀ LƯỚI CHỮ MỄ (NẰM TRONG KHUNG ĐỎ) */
+#writeCanvas {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  /* Ép buộc luôn là hình vuông hoàn hảo */
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+  position: relative;
+
+  /* ĐƯA LƯỚI VÀO ĐÂY: Chỉ xuất hiện trong ô vuông vẽ */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="100" y1="0" x2="0" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="50" y1="0" x2="50" y2="100" stroke="%23d8cfc0" stroke-width="0.8"/><line x1="0" y1="50" x2="100" y2="50" stroke="%23d8cfc0" stroke-width="0.8"/></svg>');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#writeCanvas:hover {
+  cursor: url('../others/cursor/bluetriangle_1.cur'), auto;
+}
+
+#draw-popup.is-hidden {
+  display: block !important;
+  opacity: 0 !important;
+  transform: translateY(16px) scale(0.96) !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+#draw-popup.draw-container.is-hidden {
+  border-color: rgba(255, 100, 190, 0.15) !important;
+  box-shadow: 0 0 8px rgba(255, 100, 190, 0.08) !important;
+}
+
+/* NÚT CHỨC NĂNG SIÊU NHỎ */
+.btn-draw {
+  position: absolute;
+  z-index: 6;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 100, 190, 0.7);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255, 100, 190, 0.12);
+  color: #d60c7b;
+  pointer-events: auto;
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-draw:hover {
+  background: rgba(255, 100, 190, 0.18);
+  box-shadow: 0 0 14px rgba(255, 100, 190, 0.24);
+  transform: scale(1.05);
+}
+
+.btn-undo {
+  bottom: 30px;
+  left: 5px;
+}
+
+.btn-clear {
+  top: 5px;
+  right: 5px;
+}
+
+/* KẾT QUẢ NHẬN DẠNG (KHUNG XANH) */
+#recognition-box {
+  width: 100%;
+  min-height: 40px;
+  /* Tăng nhẹ chiều cao cho dễ nhìn */
+  background: #ffffff;
+  /* Màu nền trắng sạch sẽ, không có lưới */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 6px 8px;
+  border-top: 1px solid #e0d8cc;
+  /* Đường kẻ ngăn cách với ô vẽ */
+  flex-wrap: wrap;
+}
+
+.char-candidate-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 71, 87, 0.08);
+}
+
+.char-candidate {
+  font-size: 16px;
+  /* Chữ hơi lớn để dễ nhìn */
+  color: #ff4757;
+  font-weight: bold;
+  user-select: text;
+}
+
+.char-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 71, 87, 0.12);
+  color: #ff4757;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.char-copy-btn:hover {
+  background: rgba(255, 71, 87, 0.22);
+}
+
+.is-hidden {
+  display: none !important;
+}

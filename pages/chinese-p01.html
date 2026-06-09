@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <div id="head-placeholder"></div>
+  <title>Từ mới 进</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/chinese.css" />
+
+</head>
+
+<body>
+
+
+  <div id="header-placeholder"></div>
+  <h2 class="h0" style="text-align: center; margin-bottom: 0px; text-transform: uppercase;">
+    Từ mới 进
+  </h2>
+  <main class="china-study-container">
+    <div class="flash-card">
+      <span id="q-label" class="label-type primary-color">CÂU HỎI</span>
+      <div id="main-q" class="study-main">Nhấn nút bên dưới</div>
+
+      <div class="data-row" onclick="toggleText(this)">
+        <span class="label-type">Hán tự</span>
+        <div id="text-cn" class="content-text is-hidden">---</div>
+      </div>
+      <div class="data-row" onclick="toggleText(this)">
+        <span class="label-type">Pinyin</span>
+        <div id="text-py" class="content-text is-hidden">---</div>
+      </div>
+      <div class="data-row" onclick="toggleText(this)">
+        <span class="label-type">Nghĩa Tiếng Việt</span>
+        <div id="text-vi" class="content-text is-hidden">---</div>
+      </div>
+    </div>
+
+    <div class="speed-control-container">
+      <span class="label-type">Tốc độ phát âm</span>
+      <div class="slider-wrapper">
+        <input type="range" id="speedRange" min="0.6" max="1.4" step="0.2" value="1.0" oninput="
+              document.getElementById('speedValue').innerText = this.value
+            " />
+        <span id="speedValue">1.0</span>
+      </div>
+    </div>
+
+    <div class="study-buttons">
+      <button onclick="revealAll()" class="btn-quarter">SHOW</button>
+      <button id="btn-speak" onclick="handleSpeak()" class="btn-quarter">SPEAK</button>
+      <button id="btn-check-voice" onclick="startRecognition()" class="btn-quarter">LISTEN</button>
+      <button onclick="nextCard()" class="btn-quarter">NEXT CARD</button>
+    </div>
+
+    <div id="audio-status" class="audio-status"></div>
+
+    <div id="voice-result"></div>
+
+    <div id="search-hanzii-container" class="hidden-container">
+      <button onclick="searchHanzii()" class="btn-small btn-hanzii">
+        Tra cứu Hanzii
+      </button>
+      <button onclick="searchGoogle()" class="btn-small btn-hanzii">
+        Tra cứu Google
+      </button>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- Loader Spinner & Skeleton Screen -->
+  <div id="loader-spinner-root" class="loader-spinner">
+    <div style="text-align: center;">
+      <div class="spinner"></div>
+      <div class="loader-text">Đang tải dữ liệu...</div>
+    </div>
+  </div>
+
+  <button id="draw-toggle" class="fab-btn">✎</button>
+  <div id="draw-popup" class="draw-container is-hidden">
+    <div class="canvas-wrapper">
+      <button onclick="clearCanvas()" class="btn-draw btn-clear">Clear</button>
+      <button onclick="undo()" class="btn-draw btn-undo">Undo</button>
+      <canvas id="writeCanvas"></canvas>
+      <div id="recognition-box">
+        <!-- Chỉ 3 chữ giống nhất hiện ở đây -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var s = document.createElement('script');
+    s.src = "/assets/js/main-scripts.js?v=" + Date.now();
+    document.write(s.outerHTML);
+  </script>
+  <script>
+    var s = document.createElement('script');
+    s.src = "/assets/js/chinese-001.js?v=" + Date.now();
+    document.write(s.outerHTML);
+  </script>
+
+</body>
+
+</html>
